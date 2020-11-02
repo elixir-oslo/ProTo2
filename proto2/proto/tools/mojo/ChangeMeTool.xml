@@ -1,0 +1,9 @@
+<tool id="proto_change_me_tool" name="Title of tool" version="1.0.0"
+  tool_type="proto_generic" proto_tool_module="proto.tools.mojo.ChangeMeTool" proto_tool_class="ChangeMeTool">
+  <description></description>
+<!--
+  <requirements>
+    <requirement type="package">blat</requirement>
+  </requirements>
+-->
+</tool>

@@ -1,0 +1,2 @@
+class SecurityHelper:
+    pass

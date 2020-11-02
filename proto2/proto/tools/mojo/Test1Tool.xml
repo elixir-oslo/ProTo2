@@ -1,0 +1,4 @@
+<tool id="proto_test1_tool" name="Test 1" version="1.0.0"
+  tool_type="proto_generic" proto_tool_module="proto.tools.mojo.Test1Tool" proto_tool_class="Test1Tool">
+  <description></description>
+</tool>
