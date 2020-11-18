@@ -1,10 +1,10 @@
 FROM continuumio/miniconda3
 
-ENV BASE=/usr/local
+ENV BASE=/opt/proto
 #ENV PATH=$PATH:/usr/local/bin
 
-COPY bin $BASE/bin
-COPY proto2 $BASE/proto2
+COPY . $BASE
+#COPY proto2 $BASE/proto2
 
 RUN apt-get update
 RUN apt-get install -y procps net-tools time curl
@@ -24,6 +24,6 @@ RUN pip install flask-mako
 #RUN mkdir /data
 #VOLUME /data
 
-WORKDIR $BASE/proto2
+WORKDIR $BASE
 
-CMD ["run.sh"]
+CMD ["./run.sh"]

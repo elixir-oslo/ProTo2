@@ -29,10 +29,10 @@ RESTRICTED_USERS = [username.strip() for username in
                     config.getWithDefault('restricted_users', '', 'galaxy_proto').split(',')]
 OUTPUT_PRECISION = int(config.getWithDefault('output_precision', '4', 'galaxy_proto'))
 
-PROTO_TOOL_DIR = GALAXY_BASE_DIR + '/lib/proto/tools'
+PROTO_TOOL_DIR = GALAXY_BASE_DIR + '/proto/tools'
 PROTO_TOOL_SHELVE_FN = GALAXY_BASE_DIR + '/database/proto-tool-cache.shelve'
 CONFIG_DIR = GALAXY_BASE_DIR + '/config'
-SOURCE_CODE_BASE_DIR = GALAXY_BASE_DIR + '/lib'
+SOURCE_CODE_BASE_DIR = GALAXY_BASE_DIR
 STATIC_DIR = '/static/proto'
 STATIC_PATH = GALAXY_BASE_DIR + STATIC_DIR
 STATIC_REL_PATH = URL_PREFIX + STATIC_DIR

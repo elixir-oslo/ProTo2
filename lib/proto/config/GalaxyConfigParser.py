@@ -6,7 +6,7 @@ import ast
 import os
 from configparser import ConfigParser
 
-GALAXY_BASE_DIR = os.path.abspath(os.path.dirname(__file__) + '/../../.')
+GALAXY_BASE_DIR = os.path.abspath(os.path.dirname(__file__) + '/../../../.')
 print(GALAXY_BASE_DIR)
 
 

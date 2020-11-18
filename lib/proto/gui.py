@@ -6,7 +6,7 @@ from collections import OrderedDict
 from json import loads as from_json_string
 import os, re
 
-from compat import *
+from proto2.compat import *
 
 def getDataFilePath(root, id):
     from proto.CommonFunctions import getGalaxyFnFromAnyDatasetId

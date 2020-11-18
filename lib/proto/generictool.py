@@ -516,39 +516,6 @@ class GenericToolController(BaseToolController):
 
             choice = self.decodeChoice(opts, id, choice)
 
-#             if opts == '__genome__':
-#                 id = 'dbkey'
-#                 choice = str(self.params[id]) if self.params.has_key(id) else ''
-#
-# #            if isinstance(opts, tuple):
-# #                if opts[0] == '__hidden__':
-# #                    choice = unquote(choice)
-#
-#             if opts == '__track__' or (isinstance(opts, tuple) and opts[0] == '__track__'):
-#                 #tn = choice.split(':')
-#                 #GalaxyInterface.cleanUpTrackName(tn)
-#                 #choice = ':'.join(tn)
-#                 choice = self.decodeChoiceForTrack(choice)
-#
-#             if opts == '__genomes__' or (isinstance(opts, tuple) and opts[0] == '__multihistory__'):
-#                 values = {}
-#                 for key in self.params.keys():
-#                     if key.startswith(id + '|'):
-#                         values[key.split('|')[1]] = self.params[key]
-#                 choice = OrderedDict(sorted(values.items(), \
-#                                      key=lambda t: int(t[0]) if opts[0] == '__multihistory__' else t[0]))
-#
-#             if isinstance(opts, dict):
-#                 values = type(opts)()
-#                 for k,v in opts.items():
-#                     if self.params.has_key(id + '|' + k):
-#                         values[k] = self.params[id + '|' + k]
-#                     else:
-#                         values[k] = False
-#                 choice = values
-#
-#             if isinstance(opts, bool):
-#                 choice = True if choice == "True" else False
 
             self.inputValues.append(makeUnicodeIfString(choice))
 
@@ -566,16 +533,16 @@ class GenericToolController(BaseToolController):
             print('''<html>
 
 <head>
-    <script type="text/javascript" src="%(prefix)s/static/scripts/libs/jquery/jquery.js"></script>
-    <link href="%(prefix)s/static/style/base.css" rel="stylesheet" type="text/css" />
-    <link href="%(prefix)s/static/style/proto_base.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="(prefix)/static/scripts/libs/jquery/jquery.js"></script>
+    <link href="(prefix)/static/style/base.css" rel="stylesheet" type="text/css" />
+    <link href="(prefix)/static/style/proto_base.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 
 <p style="text-align:right"><a href="#debug" onclick="$('.debug').toggle()">Toggle debug</a></p>
 
-<pre>''' % {'prefix': URL_PREFIX})
+<pre>'''.format(prefix=URL_PREFIX))
         #    print '<div class="debug">Corresponding batch run line:\n', '$Tool[%s](%s)</div>' % (self.toolId, batchargs)
 
 
@@ -614,6 +581,9 @@ class GenericToolController(BaseToolController):
 </script>
 
 </html>''')
+
+        sys.stdout.flush()
+
 
     def _executeTool(self, toolClassName, choices, galaxyFn, username):
         if hasattr(super(GenericToolController, self), '_executeTool'):

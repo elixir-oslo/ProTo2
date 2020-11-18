@@ -288,7 +288,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
     @classmethod
     def getOptionsBoxHidden(cls, prevChoices):
         return '__hidden__', \
-               '|'.join([key for key, sel in prevChoices.checkBoxList.iteritems() if sel])
+               '|'.join([key for key, sel in prevChoices.checkBoxList.items() if sel])
 
     @classmethod
     def getOptionsBoxOutputType(cls, prevChoices):

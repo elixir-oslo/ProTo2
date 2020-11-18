@@ -5,7 +5,7 @@ from proto.gui import load_input_parameters, SelectElement, \
                       GalaxyWrapper, getDataFilePath
 from proto.config import Config
 
-from compat import *
+from proto2.compat import *
 
 class BaseToolController(object):
     def __init__(self, trans = None, job = None):
@@ -20,6 +20,9 @@ class BaseToolController(object):
         self.params = self.galaxy.params
 
     def openJobParams(self, file):
+        self.params = file
+        self.json_params = {}
+        return
         #self.galaxy = None
         self.jobFile = file
         self.json_params, self.params = load_input_parameters(self.jobFile, False)
@@ -35,10 +38,10 @@ class BaseToolController(object):
         pass
 
     def stdoutToHistory(self):
-        sys.stdout = open(self.jobFile, "w", 0)
+        sys.stdout = open(self.jobFile, "w")
 
     def stdoutToFile(self, file):
-        sys.stdout = open(file, "w", 0)
+        sys.stdout = open(file, "w")
     
     def isPublic(self):
         return False
