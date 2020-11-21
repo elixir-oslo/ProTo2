@@ -1,4 +1,4 @@
-import os, shelve, types, tempfile
+import os, shelve, types, tempfile, signal, shutil
 from flask import Flask, render_template, request, Response, session, redirect, url_for, escape
 from flask_mako import MakoTemplates, render_template as render_mako
 from bioblend.galaxy import GalaxyInstance
@@ -11,6 +11,7 @@ from proto.ProtoToolRegister import getProtoToolList, getInstalledProtoTools
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
     mako = MakoTemplates(app)
     #try:
     #    app.config.from_envvar('APP_CONFIG')
@@ -19,6 +20,8 @@ def create_app(test_config=None):
 
     galaxy_url = os.getenv('GALAXY_URL', 'http://localhost.norgene.no:8080')
     galaxy_api_key = os.getenv('API_KEY', '467bf4df60d0985fac4c9d63a7bc1aa3')
+    galaxy_output = os.getenv('GALAXY_OUTPUT', tempfile.mkstemp()[1])
+    galaxy_work = os.getenv('GALAXY_WORKING_DIR', '.')
 
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
@@ -61,7 +64,7 @@ def create_app(test_config=None):
 
         if 'tool_id' in request.form:
             tool_controller = getController(job=trans.request.params)
-            tool_controller.jobFile = tempfile.mkstemp()[1]
+            tool_controller.jobFile = galaxy_output
             tool_controller.execute()
 
             with open(tool_controller.jobFile) as f:
@@ -70,6 +73,13 @@ def create_app(test_config=None):
                 hist = gi.histories.get_most_recently_used_history()
                 #gi.tools.paste_content(data, hist['id'])
                 gi.tools.upload_file(tool_controller.jobFile, hist['id'])
+                os.makedirs(galaxy_work + '/files', exist_ok=True)
+                shutil.copy(tool_controller.jobFile, galaxy_work + '/files/test.txt')
                 return data
+
+    @app.route('/shutdown')
+    def shutdown():
+        os.system(app.instance_path + '/shutdown.sh &')
+        return 'shutting down'
 
     return app
