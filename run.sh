@@ -9,7 +9,7 @@ export PYTHONPATH=$PYTHONPATH:$HERE/lib
 export FLASK_APP=proto2
 #export FLASK_ENV=development
 
-flask run -h 0.0.0.0 -p 5000 &
+flask run -h 0.0.0.0 -p 5000 2>&1 > flask.log &
 
 echo $! > flask.pid
 cat flask.pid
