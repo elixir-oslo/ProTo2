@@ -1,5 +1,5 @@
 import os, shelve, types, tempfile, signal, shutil, requests
-from flask import Flask, render_template, request, Response, session, redirect, url_for, escape
+from flask import Flask, render_template, request, Response, session, redirect, url_for, escape, send_file
 from flask_mako import MakoTemplates, render_template as render_mako
 from bioblend.galaxy import GalaxyInstance
 
@@ -21,7 +21,8 @@ def create_app(test_config=None):
     galaxy_url = os.getenv('GALAXY_URL', 'http://localhost.norgene.no:8080')
     galaxy_api_key = os.getenv('API_KEY', '467bf4df60d0985fac4c9d63a7bc1aa3')
     galaxy_output = os.getenv('GALAXY_OUTPUT', tempfile.mkstemp()[1])
-    galaxy_work = os.getenv('GALAXY_WORKING_DIR', '.')
+    galaxy_work = os.getenv('GALAXY_WORKING_DIR', os.path.join(app.instance_path, 'files'))
+    galaxy_history_id = os.getenv('HISTORY_ID', None)
 
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
@@ -68,8 +69,11 @@ def create_app(test_config=None):
 
             #with open(tool_controller.jobFile) as f:
             #    data = f.read()
+            history_id = galaxy_history_id
+            if history_id is None:
+                hist = gi.histories.get_most_recently_used_history()
+                history_id = hist['id']
 
-            hist = gi.histories.get_most_recently_used_history()
                 #gi.tools.paste_content(data, hist['id'])
                 #gi.tools.upload_file(tool_controller.jobFile, hist['id'])
                 #os.makedirs(galaxy_work + '/files', exist_ok=True)
@@ -79,16 +83,19 @@ def create_app(test_config=None):
                 'tool_id': tool_controller.toolId,
                 'URL': url_for('result', job=os.path.basename(tool_controller.jobFile), _external=True)
                 }
-            data = gi.tools.run_tool(hist['id'],tool_controller.toolId,params)
-            return repr(data)
+            try:
+                data = gi.tools.run_tool(history_id,'Test1Tool',params)
+            except Exception as e:
+                return str(e)
+            return redirect(galaxy_url)
 
     @app.route('/result/<path:job>')
     def result(job):
         jobfile = os.path.join(galaxy_work, job)
-        with open(jobfile) as f:
-            data = f.read()
-        os.unlink(jobfile)
-        return data
+        #with open(jobfile) as f:
+        #    data = f.read()
+        #os.unlink(jobfile)
+        return send_file(jobfile)
 
     @app.route('/shutdown')
     def shutdown():

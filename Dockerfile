@@ -16,7 +16,7 @@ RUN apt-get install -y procps net-tools time curl
 RUN conda config --add channels bioconda
 RUN conda config --add channels conda-forge
 
-RUN conda install flask=1.1.2 bioblend
+RUN conda install flask=1.1.2 bioblend gunicorn
 #RUN conda clean -a
 
 RUN pip install flask-mako
