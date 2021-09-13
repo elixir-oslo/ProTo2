@@ -6,7 +6,7 @@ ENV BASE=/opt/proto
 COPY . $BASE
 #COPY proto2 $BASE/proto2
 
-RUN apt-get update
+RUN apt-get --allow-releaseinfo-change update
 RUN apt-get install -y procps net-tools time curl
 #RUN apt-get upgrade -y
 #RUN apt-get clean
