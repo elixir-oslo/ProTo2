@@ -1,10 +1,6 @@
-FROM continuumio/miniconda3:4.8.2
+FROM continuumio/miniconda3:4.8.2 AS miniconda
+# newer miniconda image with python > 3.7 breaks flask-mako
 
-ENV BASE=/opt/proto
-#ENV PATH=$PATH:/usr/local/bin
-
-COPY . $BASE
-#COPY proto2 $BASE/proto2
 
 RUN apt-get --allow-releaseinfo-change update
 RUN apt-get install -y procps net-tools time curl
@@ -21,9 +17,19 @@ RUN conda install flask=1.1.2 bioblend gunicorn
 
 RUN pip install flask-mako
 
+#FROM scratch
+#COPY --from=miniconda / /
+
+ENV BASE=/opt/proto
+#ENV PATH=$PATH:/usr/local/bin
+
+COPY . $BASE
+#COPY proto2 $BASE/proto2
+
 #RUN mkdir /data
 #VOLUME /data
 
 WORKDIR $BASE
+
 
 CMD ["./run.sh"]
