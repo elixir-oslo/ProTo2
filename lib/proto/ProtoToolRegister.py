@@ -29,6 +29,20 @@ ProtoClassInfo = namedtuple('ProtoClassInfo', ['class_name', 'super_class_list']
 
 
 # Public functions
+def initInstalledProtoTools():
+    tool_register = shelve.open(PROTO_TOOL_SHELVE_FN, 'n')
+    tool_register['Test1Tool'] = ('proto.tools.mojo.Test1Tool', 'Test1Tool', None)
+    tool_register['proto_proto_gui_test_tool1'] = ('proto.tools.guitest.ProtoGuiTestTool1', 'ProtoGuiTestTool1', None)
+    tool_register['proto_proto_gui_test_tool2'] = ('proto.tools.guitest.ProtoGuiTestTool2', 'ProtoGuiTestTool2', None)
+    tool_register['proto_proto_gui_test_tool3'] = ('proto.tools.guitest.ProtoGuiTestTool3', 'ProtoGuiTestTool3', None)
+    tool_register['proto_proto_gui_test_tool4'] = ('proto.tools.guitest.ProtoGuiTestTool4', 'ProtoGuiTestTool4', None)
+    tool_register['proto_proto_gui_test_tool5'] = ('proto.tools.guitest.ProtoGuiTestTool5', 'ProtoGuiTestTool5', None)
+    tool_register['proto_proto_gui_test_tool6'] = ('proto.tools.guitest.ProtoGuiTestTool6', 'ProtoGuiTestTool6', None)
+    tool_register['proto_proto_gui_test_tool7'] = ('proto.tools.guitest.ProtoGuiTestTool7', 'ProtoGuiTestTool7', None)
+    tool_list = dict(tool_register)
+    tool_register.close()
+    return tool_list
+
 
 def getInstalledProtoTools():
     tool_shelve = shelve.open(PROTO_TOOL_SHELVE_FN, 'r')
@@ -75,6 +89,7 @@ def storeHiddenModules(hidden_modules_fn, hidden_module_paths, append=False):
 def getToolPrototype(toolId):
     tool_shelve = None
     try:
+        print(PROTO_TOOL_SHELVE_FN)
         tool_shelve = shelve.open(PROTO_TOOL_SHELVE_FN, 'r')
         module_name, class_name, conda_activate_source = \
             tool_shelve[str(toolId)]
