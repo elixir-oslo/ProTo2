@@ -6,7 +6,7 @@ from collections import OrderedDict
 from json import loads as from_json_string
 import os, re
 
-from proto2.compat import *
+from compat import Dict2, patch_dict
 
 def getDataFilePath(root, id):
     from proto.CommonFunctions import getGalaxyFnFromAnyDatasetId
@@ -16,8 +16,9 @@ def load_input_parameters( filename, erase_file = False ):
     datasource_params = {}
     try:
         json_params = from_json_string( open( filename, 'r' ).read() )
-        datasource_params = json_params.get( 'param_dict' )
-    except:
+        datasource_params = from_json_string(json_params.get( 'param_dict' ))
+    except Exception as e:
+        raise(e)
         json_params = None
         for line in open( filename, 'r' ):
             try:

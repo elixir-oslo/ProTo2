@@ -4,8 +4,7 @@ from urllib.parse import unquote
 from proto.gui import load_input_parameters, SelectElement, \
                       GalaxyWrapper, getDataFilePath
 from proto.config import Config
-
-from proto2.compat import *
+from compat import patch_dict
 
 class BaseToolController(object):
     def __init__(self, trans = None, job = None):
@@ -20,13 +19,13 @@ class BaseToolController(object):
         self.params = self.galaxy.params
 
     def openJobParams(self, file):
-        self.params = file
-        self.json_params = {}
-        return
+        #self.params = file
+        #self.json_params = {}
+        #return
         #self.galaxy = None
         self.jobFile = file
         self.json_params, self.params = load_input_parameters(self.jobFile, False)
-        if self.params.has_key('tool_name'):
+        if 'tool_name' in self.params:
             self.params['tool_id'] = self.params['tool_name']
 
     def action(self):

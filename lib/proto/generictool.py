@@ -23,8 +23,6 @@ from proto.StaticFile import StaticImage
 
 log = logging.getLogger( __name__ )
 
-unicode = str
-basestring = str
 
 def getClassName(obj):
     return obj.__class__.__name__
@@ -73,7 +71,7 @@ class GenericToolController(BaseToolController):
         self.resetAll = False
         if self.subClassId and self.subClassId in self.subClasses:
             self.prototype = self.subClasses[self.subClassId]()
-            if not self.oldValues.has_key('sub_class_id') or self.oldValues['sub_class_id'] != self.subClassId:
+            if 'sub_class_id' not in self.oldValues or self.oldValues['sub_class_id'] != self.subClassId:
                 self.oldValues['sub_class_id'] = self.subClassId
                 # do not reset boxes/ignore params if we are called with parameters in the url (e.g redirect or demo link)
                 if not self.use_default:
@@ -138,10 +136,10 @@ class GenericToolController(BaseToolController):
     def _getIdxList(self, inputList):
         idxList = []
         if inputList is None:
-            idxList = range(len(self.inputIds))
+            idxList = list(range(len(self.inputIds)))
         else:
             for i in inputList:
-                if isinstance(i, basestring):
+                if isinstance(i, str):
                     try:
                         idx = self.inputIds.index(i)
                     except ValueError:
@@ -156,7 +154,7 @@ class GenericToolController(BaseToolController):
         return idxList
 
     def _getIdxForBoxId(self, i):
-        if isinstance(i, basestring):
+        if isinstance(i, str):
             try:
                 idx = self.inputIds.index(i)
             except ValueError:
@@ -276,10 +274,10 @@ class GenericToolController(BaseToolController):
             try:
                 opts, info = self.getCachedOption(id)
                 self.input_changed = False  # Temporarily. Full check towards end of action()
-                print('Loaded options from cache. id: {}, opts: {}, info: {}'.format(
-                    id, opts, info))
+                print(('Loaded options from cache. id: {}, opts: {}, info: {}'.format(
+                    id, opts, info)))
             except Exception as e:
-                print('Cache load failed for id "%s": %s' % (id, e))
+                print(('Cache load failed for id "%s": %s' % (id, e)))
                 opts, info = self._getOptionsBox(i, val)
                 self.input_changed = True
         
@@ -320,7 +318,7 @@ class GenericToolController(BaseToolController):
                         self.cachedExtra[id] = opts
                 if not self.initChoicesDict:
                     values = type(opts)()
-                    for k,v in opts.items():
+                    for k,v in list(opts.items()):
                         # values[k] = bool(self.params.get(id + '|' + k, False if val else v))
                         values[str(k)] = bool(self.params.get(id + '|' + k, False) if val else v)
                     val = values
@@ -374,10 +372,10 @@ class GenericToolController(BaseToolController):
                     opts = self.galaxy.itemsFromHistoryFn(opts[1:] if len(opts)>1 else None)
                     if not self.initChoicesDict:
                         values = OrderedDict()
-                        for k,v in opts.items():
+                        for k,v in list(opts.items()):
                             itemval = self.params.get(id + '|' + k, None)
                             #if itemval:
-                            values[unicode(k)] = itemval
+                            values[str(k)] = itemval
 
                         val = values
 
@@ -391,7 +389,7 @@ class GenericToolController(BaseToolController):
                         val = opts[1]
                     #elif val:
                     #    val = unquote(val)
-                elif len(opts) in [2, 3] and (isinstance(opts[0], basestring)):
+                elif len(opts) in [2, 3] and (isinstance(opts[0], str)):
                     if len(opts) == 2:
                         opts = opts + (False,)
                     if isinstance(opts[1], int):
@@ -421,7 +419,7 @@ class GenericToolController(BaseToolController):
                         for r in range(1, len(opts)):
                             core.tableLine(opts[r])
                     core.tableFooter()
-                    val = unicode(core)
+                    val = str(core)
                     display_only = True
 
                 else:
@@ -441,7 +439,7 @@ class GenericToolController(BaseToolController):
             #    if val is None:
             #        val = ''
 
-            self.displayValues.append(makeUnicodeIfString(val) if isinstance(val, basestring) else repr(val))
+            self.displayValues.append(makeUnicodeIfString(val) if isinstance(val, str) else repr(val))
             self.inputValues.append(None if display_only else makeUnicodeIfString(val))
             self.options.append(opts)
 
@@ -471,7 +469,7 @@ class GenericToolController(BaseToolController):
     def decodeChoice(self, opts, id, choice):
         if opts == '__genome__':
             id = 'dbkey'
-            choice = unicode(self.params[id]) if self.params.has_key(id) else ''
+            choice = str(self.params[id]) if id in self.params else ''
 
             #            if isinstance(opts, tuple):
             #                if opts[0] == '__hidden__':
@@ -479,16 +477,16 @@ class GenericToolController(BaseToolController):
 
         if opts == '__genomes__' or (isinstance(opts, tuple) and opts[0] == '__multihistory__'):
             values = {}
-            for key in self.params.keys():
+            for key in list(self.params.keys()):
                 if key.startswith(id + '|'):
                     values[key.split('|')[1]] = self.params[key]
-            choice = OrderedDict(sorted(values.items(), \
+            choice = OrderedDict(sorted(list(values.items()), \
                                         key=lambda t: int(t[0]) if opts[0] == '__multihistory__' else t[0]))
 
         if isinstance(opts, dict):
             values = type(opts)()
-            for k, v in opts.items():
-                if self.params.has_key(id + '|' + k):
+            for k, v in list(opts.items()):
+                if id + '|' + k in self.params:
                     values[k] = self.params[id + '|' + k]
                 else:
                     values[k] = False
@@ -504,13 +502,13 @@ class GenericToolController(BaseToolController):
         return ['html', 'customhtml']
 
     def execute(self):
-        outputFormat = self.params['datatype'] if self.params.has_key('datatype') else 'html'
+        outputFormat = self.params['datatype'] if 'datatype' in self.params else 'html'
         if outputFormat in self._getStdOutToHistoryDatatypes():
             self.stdoutToHistory()
 
         for i in range(len(self.inputIds)):
             id = self.inputIds[i]
-            choice = self.params[id] if self.params.has_key(id) else ''
+            choice = self.params[id] if id in self.params else ''
 
             opts = self.getOptionsBox(id, i, choice)
 
@@ -530,7 +528,7 @@ class GenericToolController(BaseToolController):
 
         #print choices
         if self.prototype.shouldAppendHtmlHeaderAndFooter(outputFormat):
-            print('''<html>
+            print(('''<html>
 
 <head>
     <script type="text/javascript" src="(prefix)/static/scripts/libs/jquery/jquery.js"></script>
@@ -542,7 +540,7 @@ class GenericToolController(BaseToolController):
 
 <p style="text-align:right"><a href="#debug" onclick="$('.debug').toggle()">Toggle debug</a></p>
 
-<pre>'''.format(prefix=URL_PREFIX))
+<pre>'''.format(prefix=URL_PREFIX)))
         #    print '<div class="debug">Corresponding batch run line:\n', '$Tool[%s](%s)</div>' % (self.toolId, batchargs)
 
 
@@ -556,16 +554,16 @@ class GenericToolController(BaseToolController):
 #                    self.extraGalaxyFn[output[0]] = self.params[output[0]]
 
         if hasattr(self.prototype, 'getExtraHistElements'):
-            if self.params.has_key('extra_output'):
+            if 'extra_output' in self.params:
                 extra_hist_elements = json.loads(unquote(self.params['extra_output']))
             else:
                 extra_hist_elements = self.prototype.getExtraHistElements(choices)
             if isinstance(extra_hist_elements, list):
                 for output in extra_hist_elements:
                     if isinstance(output, HistElement):
-                        self.extraGalaxyFn[unicode(output.name)] = self.params[output.name]
+                        self.extraGalaxyFn[str(output.name)] = self.params[output.name]
                     else:
-                        self.extraGalaxyFn[unicode(output[0])] = self.params[output[0]]
+                        self.extraGalaxyFn[str(output[0])] = self.params[output[0]]
 
 
         username = self.params['userEmail'] if 'userEmail' in self.params else ''
@@ -676,7 +674,7 @@ class GenericToolController(BaseToolController):
             return self.prototype.isRedirectTool()
 
     def doRedirect(self):
-        return self.isRedirectTool() and self.getRedirectURL() and self.params.has_key('start')
+        return self.isRedirectTool() and self.getRedirectURL() and 'start' in self.params
 
     def getRedirectURL(self):
         return self.prototype.getRedirectURL(self.choices)
