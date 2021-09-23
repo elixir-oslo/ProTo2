@@ -1,7 +1,7 @@
 from collections import namedtuple
 from werkzeug.datastructures import MultiDict
-from flask import url_for, app
-from proto2.compat import patch_dict
+from flask import url_for
+from compat import patch_dict
 
 
 class SecurityHelper:
