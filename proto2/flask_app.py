@@ -1,12 +1,13 @@
-import os, shelve, types, tempfile, signal, shutil, requests
-from flask import Flask, render_template, request, Response, session, redirect, url_for, escape, send_file
+import json
+import os, shelve, tempfile
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_mako import MakoTemplates, render_template as render_mako
 from bioblend.galaxy import GalaxyInstance
 
-from proto2.compat.galaxy import Transaction
-from proto.config.Config import PROTO_TOOL_SHELVE_FN, PROTO_TOOL_DIR
-from proto.generictool import getController, GenericToolController
-from proto.ProtoToolRegister import getProtoToolList, getInstalledProtoTools
+from compat.galaxy import Transaction
+from proto.config.Config import PROTO_TOOL_SHELVE_FN
+from proto.generictool import getController
+from proto.ProtoToolRegister import initInstalledProtoTools
 
 
 def create_app(test_config=None):
@@ -30,21 +31,7 @@ def create_app(test_config=None):
         'title': 'ProTo2 test app'
     }
 
-    #tool_list = getProtoToolList(PROTO_TOOL_DIR, False)
-    #tool_list = getInstalledProtoTools()
-    #print(PROTO_TOOL_DIR, repr(tool_list))
-
-    tool_register = shelve.open(PROTO_TOOL_SHELVE_FN, 'n')
-    tool_register['Test1Tool'] = ('proto.tools.mojo.Test1Tool', 'Test1Tool', None)
-    tool_register['proto_proto_gui_test_tool1'] = ('proto.tools.guitest.ProtoGuiTestTool1', 'ProtoGuiTestTool1', None)
-    tool_register['proto_proto_gui_test_tool2'] = ('proto.tools.guitest.ProtoGuiTestTool2', 'ProtoGuiTestTool2', None)
-    tool_register['proto_proto_gui_test_tool3'] = ('proto.tools.guitest.ProtoGuiTestTool3', 'ProtoGuiTestTool3', None)
-    tool_register['proto_proto_gui_test_tool4'] = ('proto.tools.guitest.ProtoGuiTestTool4', 'ProtoGuiTestTool4', None)
-    tool_register['proto_proto_gui_test_tool5'] = ('proto.tools.guitest.ProtoGuiTestTool5', 'ProtoGuiTestTool5', None)
-    tool_register['proto_proto_gui_test_tool6'] = ('proto.tools.guitest.ProtoGuiTestTool6', 'ProtoGuiTestTool6', None)
-    tool_register['proto_proto_gui_test_tool7'] = ('proto.tools.guitest.ProtoGuiTestTool7', 'ProtoGuiTestTool7', None)
-    tool_list = dict(tool_register)
-    tool_register.close()
+    tool_list = initInstalledProtoTools()
 
     @app.route('/', methods=['GET','POST'])
     def index():
@@ -63,9 +50,9 @@ def create_app(test_config=None):
         trans = Transaction(app, gi, request)
 
         if 'tool_id' in request.form:
-            tool_controller = getController(job=trans.request.params)
-            tool_controller.jobFile = tempfile.mkstemp(dir=galaxy_work)[1]
-            tool_controller.execute()
+            tool_controller = getController(trans)
+            #tool_controller.jobFile = tempfile.mkstemp(dir=galaxy_work)[1]
+            #tool_controller.execute()
 
             #with open(tool_controller.jobFile) as f:
             #    data = f.read()
@@ -79,12 +66,15 @@ def create_app(test_config=None):
                 #os.makedirs(galaxy_work + '/files', exist_ok=True)
                 #shutil.copy(tool_controller.jobFile, galaxy_work + '/files/test.txt')
 
-            params={
-                'tool_id': tool_controller.toolId,
-                'URL': url_for('result', job=os.path.basename(tool_controller.jobFile), _external=True)
+            param_dict = {
+                "tool_id": tool_controller.toolId,
+                "tool_name": tool_controller.toolId
+                #'URL': url_for('result', job=os.path.basename(tool_controller.jobFile), _external=True)
                 }
+            param_dict.update(trans.request.params)
             try:
-                data = gi.tools.run_tool(history_id,'Test1Tool',params)
+                #data = gi.tools.run_tool(history_id,'Test1Tool',params)
+                data = gi.tools.run_tool(history_id, 'proto2_run_tool', {"param_dict": json.dumps(param_dict)})
             except Exception as e:
                 return str(e)
             return redirect(galaxy_url)
