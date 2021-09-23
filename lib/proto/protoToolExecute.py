@@ -9,6 +9,10 @@ sys.path[0] = lib_dir
 
 from proto.generictool import getController
 
+from proto.ProtoToolRegister import initInstalledProtoTools
+initInstalledProtoTools()
+
+print(sys.argv[1])
 #sys.path = sys.path[1:]  # to remove the '/proto' directory from the Python path
 getController(None, sys.argv[1]).execute()
 
