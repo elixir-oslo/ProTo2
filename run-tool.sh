@@ -12,4 +12,6 @@ cat "$INPUTS"
 
 python -V
 
-python $HERE/lib/proto/protoToolExecute.py "$GALAXY_OUTPUT"
+#echo {"type": "dataset", "dataset_id": ${GALAXY_OUTPUT_ID}, "name": "my dynamic name", "ext": "txt", "info": "my dynamic info", "dbkey": "cust1"} > galaxy.json
+
+python $HERE/lib/proto/protoToolExecute.py "$GALAXY_OUTPUT" "$GALAXY_OUTPUT_ID"

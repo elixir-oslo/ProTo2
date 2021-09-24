@@ -14,5 +14,14 @@ initInstalledProtoTools()
 
 print(sys.argv[1])
 #sys.path = sys.path[1:]  # to remove the '/proto' directory from the Python path
-getController(None, sys.argv[1]).execute()
+toolCtrl = getController(None, sys.argv[1])
+toolCtrl.execute()
 
+outName = toolCtrl.prototype.getOutputName()
+outFormat = toolCtrl.prototype.getOutputFormat()
+
+with open('galaxy.json', 'w') as f:
+    f.writelines([
+        '{{"type": "dataset", "dataset_id": "{}", "name": "{}", "ext": "{}", "info": "info", "dbkey": "{}"}}'
+            .format(sys.argv[2], outName, outFormat, '?')
+    ])
