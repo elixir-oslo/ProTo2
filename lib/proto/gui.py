@@ -121,7 +121,7 @@ class GalaxyWrapper:
         items = OrderedDict()
         for dataset in self.getHistory(exts):
             option_tag, val = self.makeHistoryOption(dataset)[:2]
-            items[unicode(dataset.dataset_id)] = val
+            items[str(dataset.dataset_id)] = val
         return items
 
     def makeHistoryOption(self, dataset, select=None, sep=':'):
@@ -215,7 +215,7 @@ def _disabled(opt, sel):
 
 def joinAttrs(attrs):
     str = ''
-    for k, v in attrs.items():
+    for k, v in list(attrs.items()):
         str += k + '="' + v + '" '
     return str
 

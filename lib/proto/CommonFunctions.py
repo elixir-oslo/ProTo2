@@ -1,6 +1,6 @@
 import os
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from collections import OrderedDict
 from numbers import Number
 
@@ -9,8 +9,6 @@ from proto.config.Config import OUTPUT_PRECISION
 from proto.config.Security import galaxySecureEncodeId, galaxySecureDecodeId, \
     GALAXY_SECURITY_HELPER_OBJ
 
-basestring = str
-unicode = str
 
 """
 Note on datasetInfo and datasetId (used in several functions):
@@ -160,7 +158,7 @@ def createGalaxyFilesFn(galaxyFn, filename):
 
 
 def extractFnFromDatasetInfo(datasetInfo):
-    if isinstance(datasetInfo, basestring):
+    if isinstance(datasetInfo, str):
         datasetInfo = datasetInfo.split(':')
     try:
         return getGalaxyFnFromEncodedDatasetId(datasetInfo[2])
@@ -170,7 +168,7 @@ def extractFnFromDatasetInfo(datasetInfo):
 
 
 def extractFileSuffixFromDatasetInfo(datasetInfo, fileSuffixFilterList=None):
-    if isinstance(datasetInfo, basestring):
+    if isinstance(datasetInfo, str):
         datasetInfo = datasetInfo.split(':')
 
     suffix = datasetInfo[1]
@@ -182,10 +180,10 @@ def extractFileSuffixFromDatasetInfo(datasetInfo, fileSuffixFilterList=None):
 
 
 def extractNameFromDatasetInfo(datasetInfo):
-    if isinstance(datasetInfo, basestring):
+    if isinstance(datasetInfo, str):
         datasetInfo = datasetInfo.split(':')
 
-    from urllib import unquote
+    from urllib.parse import unquote
     return unquote(str(datasetInfo[-1])).decode('utf-8')
 
 
@@ -216,7 +214,7 @@ def createGalaxyToolURL(toolId, **kwArgs):
     if toolId == 'upload1':
         return "javascript:void(0)"
     return URL_PREFIX + '/tool_runner?tool_id=' + toolId + \
-            ''.join(['&' + urllib.quote(key) + '=' + urllib.quote(value) for key,value in kwArgs.iteritems()])
+            ''.join(['&' + urllib.parse.quote(key) + '=' + urllib.parse.quote(value) for key,value in kwArgs.items()])
 
 
 def getGalaxyUploadLinkOnclick():
@@ -265,7 +263,7 @@ def strWithNatLangFormatting(val, separateThousands=True):
 
 def sortDictOfLists(dictOfLists, sortColumnIndex, descending=True):
     return OrderedDict(sorted(
-        list(dictOfLists.iteritems()), key=lambda t: (t[1][sortColumnIndex]), reverse=descending))
+        list(dictOfLists.items()), key=lambda t: (t[1][sortColumnIndex]), reverse=descending))
 
 
 def smartSortDictOfLists(dictOfLists, sortColumnIndex, descending=True):
@@ -273,7 +271,7 @@ def smartSortDictOfLists(dictOfLists, sortColumnIndex, descending=True):
     # convert = lambda text: int(text) if text.isdigit() else text
     # alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
     return OrderedDict(sorted(
-        list(dictOfLists.iteritems()), key=lambda t: forceNumericSortingKey(t[1][sortColumnIndex]), reverse=descending))
+        list(dictOfLists.items()), key=lambda t: forceNumericSortingKey(t[1][sortColumnIndex]), reverse=descending))
 
 
 def _strIsFloat(s):
@@ -307,7 +305,7 @@ def forceNumericSortingKey(key):
 def convertToDictOfLists(dataDict):
     """Convert a dict of tuples or single values to dict of lists"""
     dataDictOfLists = OrderedDict()
-    for key, val in dataDict.iteritems():
+    for key, val in dataDict.items():
         if isinstance(val, list):
             dataDictOfLists[key] = val
         elif isinstance(val, tuple):
@@ -320,10 +318,10 @@ def convertToDictOfLists(dataDict):
 def fromDictOfDictsToDictOfListsAndColumnNameList(dataDict, firstColName=''):
     colNames = []
     convertedDataDict = OrderedDict()
-    for key1, val1 in dataDict.iteritems():
+    for key1, val1 in dataDict.items():
         if not colNames:
-            colNames = [firstColName] + val1.keys()
-        convertedDataDict[key1] = val1.values()
+            colNames = [firstColName] + list(val1.keys())
+        convertedDataDict[key1] = list(val1.values())
     return convertedDataDict, colNames
 
 
@@ -333,9 +331,9 @@ def isSamePath(path, otherPath):
 
 def makeUnicodeIfString(obj):
     return obj
-    if not isinstance(obj, basestring):
+    if not isinstance(obj, str):
         return obj
     try:
         return obj.decode('utf-8')
     except (UnicodeDecodeError, UnicodeEncodeError, AttributeError):
-        return unicode(obj)
+        return str(obj)

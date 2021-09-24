@@ -1,8 +1,6 @@
 import os
 import re
 
-unicode = str
-
 from proto.TableCoreMixin import TableCoreMixin
 
 
@@ -162,7 +160,7 @@ class HtmlCore(TableCoreMixin):
             for tag, el in zip(tagRow, headerRow):
                 self._str += '<th' + \
                              (' ' + tag if tag != '' else '') + \
-                             '>' + unicode(el) + '</th>'
+                             '>' + str(el) + '</th>'
             self._str += '</tr>' + os.linesep
 
         return self
@@ -171,7 +169,7 @@ class HtmlCore(TableCoreMixin):
         self.tableRowBegin(**kwargs)
         for i, el in enumerate(row):
             rowSpan = rowSpanList[i] if rowSpanList else None
-            self.tableCell(unicode(el), rowSpan=rowSpan, **kwargs)
+            self.tableCell(str(el), rowSpan=rowSpan, **kwargs)
         self.tableRowEnd(**kwargs)
         return self
 
@@ -207,9 +205,9 @@ class HtmlCore(TableCoreMixin):
         if style:
             self._str += ' style="%s"' % style
         if rowSpan:
-            self._str += ' rowspan="' + unicode(rowSpan) + '"'
+            self._str += ' rowspan="' + str(rowSpan) + '"'
         if colSpan:
-            self._str += ' colspan="' + unicode(colSpan) + '"'
+            self._str += ' colspan="' + str(colSpan) + '"'
         self._str += '>' + content + '</td>'
 
     def tableFooter(self, expandable=False, tableId=None, numRows=None, visibleRows=6, **kwargs):
