@@ -3,7 +3,6 @@ from collections import OrderedDict
 from proto.HtmlCore import HtmlCore
 from proto.tools.GeneralGuiTool import GeneralGuiTool
 
-unicode = str
 
 ALL_GUI_ELEMENTS = [
     ('Check box', 'checkBox'),

@@ -360,7 +360,7 @@ class ProtoGuiTestTool5(GeneralGuiTool):
         core.paragraph('Not publicly available, in order to test the "isPublic()" method.')
         core.paragraph('There should also be an error message for incorrect illustration ' \
                        'path, testing "getDebugMode()".')
-        return unicode(core)
+        return str(core)
 
     @classmethod
     def getToolIllustration(cls):

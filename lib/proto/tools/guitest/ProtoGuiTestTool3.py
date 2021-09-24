@@ -314,7 +314,7 @@ class ProtoGuiTestTool3(GeneralGuiTool):
 
             core.end()
 
-        return unicode(core)
+        return str(core)
 
     @classmethod
     def _writeHtmlContent(cls, htmlContent, outFileName):
@@ -494,7 +494,7 @@ class ProtoGuiTestTool3(GeneralGuiTool):
         the name of the tool.
         """
         if cls._numberOfHistoriesSelected(choices) > 0:
-            print cls._numberOfHistoriesSelected(choices)
+            print(cls._numberOfHistoriesSelected(choices))
             if choices.oneOrMany == cls.MULTIPLE_HISTORY_TEXT:
                 historyName = cls._getNamesForSelectedHistories(choices)[0]
             else:
@@ -504,7 +504,7 @@ class ProtoGuiTestTool3(GeneralGuiTool):
     @classmethod
     def _numberOfHistoriesSelected(cls, choices):
         if choices.oneOrMany == cls.MULTIPLE_HISTORY_TEXT:
-            return sum(1 for sel in choices.histories.values() if sel)
+            return sum(1 for sel in list(choices.histories.values()) if sel)
         else:
             if choices.history:
                 return 1
@@ -519,7 +519,7 @@ class ProtoGuiTestTool3(GeneralGuiTool):
     @classmethod
     def _getDatasetInfoForSelectedHistories(cls, choices):
         if choices.oneOrMany == cls.MULTIPLE_HISTORY_TEXT:
-            return [val for val in choices.histories.values() if val]
+            return [val for val in list(choices.histories.values()) if val]
         else:
             return [choices.history]
 

@@ -3,8 +3,6 @@ from collections import OrderedDict
 from proto.HtmlCore import HtmlCore
 from proto.tools.GeneralGuiTool import GeneralGuiTool
 
-unicode = str
-xrange = range
 
 ALL_GUI_ELEMENTS = [
     ('Password field', 'passwordField'),
@@ -39,7 +37,7 @@ GUI_ELEMENTS_ORDER = [
 
 A = 'A'
 B = 'B'
-C = u'\xc5'
+C = '\xc5'
 DEFAULT_TEXT = 'Default text'
 READ_ONLY_TEXT = "Read only text"
 CHECK_BOX_LIST = OrderedDict([('Something', True), ('Something else', False)])
@@ -229,7 +227,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
         if prevChoices.passwordField:
             core = HtmlCore()
             core.descriptionLine('Password written', prevChoices.passwordField)
-            return '__rawstr__', unicode(core)
+            return '__rawstr__', str(core)
 
     @classmethod
     def getOptionsBoxHistorySelectionTabular(cls, prevChoices):
@@ -243,14 +241,14 @@ class ProtoGuiTestTool2(GeneralGuiTool):
                 fileName = extractFnFromDatasetInfo(prevChoices.historySelectionTabular)
                 with open(fileName) as inputFile:
                     output = ''
-                    for i in xrange(10):
+                    for i in range(10):
                         output += inputFile.readline()
                 return output, 10, True
             else:
                 return '', 10, True
         except Exception as e:
             pass
-        return unicode(e)
+        return str(e)
 
     @classmethod
     def getOptionsBoxCheckBox(cls, prevChoices):
@@ -279,16 +277,16 @@ class ProtoGuiTestTool2(GeneralGuiTool):
     @classmethod
     def getOptionsBoxCheckBoxList(cls, prevChoices):
         return OrderedDict([
-            (unicode(prevChoices.checkBox), False),
-            (unicode(prevChoices.selectionBox), False),
-            (unicode(prevChoices.textAreaReadWrite), True),
-            (unicode(prevChoices.passwordField), False),
+            (str(prevChoices.checkBox), False),
+            (str(prevChoices.selectionBox), False),
+            (str(prevChoices.textAreaReadWrite), True),
+            (str(prevChoices.passwordField), False),
         ])
 
     @classmethod
     def getOptionsBoxHidden(cls, prevChoices):
         return '__hidden__', \
-               '|'.join([key for key, sel in prevChoices.checkBoxList.items() if sel])
+               '|'.join([key for key, sel in list(prevChoices.checkBoxList.items()) if sel])
 
     @classmethod
     def getOptionsBoxOutputType(cls, prevChoices):
@@ -350,7 +348,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
 
         Mandatory unless isRedirectTool() returns True.
         """
-        print(cls._getChoicesAsHtml(choices))
+        print((cls._getChoicesAsHtml(choices)))
 
     @classmethod
     def validateAndReturnErrors(cls, choices):
@@ -374,7 +372,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
         for guiElement in ALL_GUI_ELEMENTS:
             core.descriptionLine(guiElement[0] + ' [' + guiElement[1] + ']',
                                  repr(getattr(choices, guiElement[1])))
-        return unicode(core)
+        return str(core)
 
     # @classmethod
     # def getSubToolClasses(cls):

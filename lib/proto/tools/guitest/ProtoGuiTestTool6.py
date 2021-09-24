@@ -41,7 +41,7 @@ class ProtoGuiTestTool6(GeneralGuiTool):
         return [('Number of rows (2-{})'.format(cls.MAX_ROWS_AND_COLS), 'numRows'),
                 ('Number of columns (2-{})'.format(cls.MAX_ROWS_AND_COLS), 'numCols')] +\
                [('Value in matrix element ({}, {})'.format(i, j), 'extra{}_{}'.format(i, j))
-                for i in xrange(cls.MAX_ROWS_AND_COLS) for j in xrange(cls.MAX_ROWS_AND_COLS)] +\
+                for i in range(cls.MAX_ROWS_AND_COLS) for j in range(cls.MAX_ROWS_AND_COLS)] +\
                [('Matrix', 'matrix'),
                 ('Select next R single matrix operation', 'operation'),
                 ('Operation queue', 'queue'),
@@ -193,8 +193,8 @@ class ProtoGuiTestTool6(GeneralGuiTool):
     @classmethod
     def setupExtraBoxMethods(cls):
         from functools import partial
-        for i in xrange(cls.MAX_ROWS_AND_COLS):
-            for j in xrange(cls.MAX_ROWS_AND_COLS):
+        for i in range(cls.MAX_ROWS_AND_COLS):
+            for j in range(cls.MAX_ROWS_AND_COLS):
                 setattr(cls, 'getOptionsBoxExtra{}_{}'.format(i, j),
                         partial(cls._getOptionBoxExtra, i=i, j=j))
 
@@ -239,7 +239,7 @@ class ProtoGuiTestTool6(GeneralGuiTool):
         else:
             core.paragraph('No matrix operations selected.')
 
-        return '__rawstr__', unicode(core)
+        return '__rawstr__', str(core)
 
     # @classmethod
     # def getInfoForOptionsBoxKey(cls, prevChoices):
@@ -310,7 +310,7 @@ class ProtoGuiTestTool6(GeneralGuiTool):
             mat = cls._getMatrixFromChoices(choices)
             for operation in choices.queue.split('|'):
                 mat = r[operation](mat).tolist()
-        except Exception, e:
+        except Exception as e:
             core.paragraph(str(e))
         else:
             core.smallHeader('Output matrix after all R single matrix operations have been '
@@ -320,7 +320,7 @@ class ProtoGuiTestTool6(GeneralGuiTool):
                 core.tableLine(mat[rowNum])
             core.tableFooter()
 
-        print unicode(core)
+        print(str(core))
 
     @classmethod
     def validateAndReturnErrors(cls, choices):
@@ -360,8 +360,8 @@ class ProtoGuiTestTool6(GeneralGuiTool):
     @classmethod
     def _getExtraChoices(cls, choices):
         return [getattr(choices, 'extra{}_{}'.format(i, j)) \
-                for i in xrange(int(choices.numRows))
-                for j in xrange(int(choices.numCols))]
+                for i in range(int(choices.numRows))
+                for j in range(int(choices.numCols))]
 
     # @classmethod
     # def getSubToolClasses(cls):
