@@ -1,0 +1,42 @@
+<tool id="proto2_run_tool" name="Run ProTo tool" version="0.0.1">
+    <requirements>
+        <container type="docker">proto2-test:latest</container>
+    </requirements>
+	<configfiles>
+		<inputs name="inputs" filename="inputs.json" />
+	</configfiles>
+
+    <environment_variables>
+        <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
+        <environment_variable name="REMOTE_HOST">$__galaxy_url__</environment_variable>
+        <environment_variable name="GALAXY_WEB_PORT">8080</environment_variable>
+        <environment_variable name="GALAXY_URL">$__galaxy_url__</environment_variable>
+        <environment_variable name="API_KEY" inject="api_key" />
+    </environment_variables>
+    <command detect_errors="exit_code"><![CDATA[
+    	export GALAXY_WORKING_DIR=`pwd` &&
+    	export GALAXY_OUTPUT='$output' &&
+    	export GALAXY_OUTPUT_ID='$output.id' &&
+    	mkdir files &&
+    	
+		sh /opt/proto/run-tool.sh 'inputs.json'
+    ]]>
+    </command>
+    <inputs>
+        <param name="param_dict" type="text" area="true" optional="false" label="Tool params">
+        	<sanitizer sanitize="false" />
+        </param>
+
+    </inputs>
+    
+    <outputs>
+        <data name="output" format="html" label="ProTo tool output">
+        	<discover_datasets pattern="__designation_and_ext__" directory="files" visible="true" />
+        </data>
+    </outputs>
+
+    <tests>
+    </tests>
+    <help>
+    </help>
+</tool>
