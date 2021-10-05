@@ -528,19 +528,19 @@ class GenericToolController(BaseToolController):
 
         #print choices
         if self.prototype.shouldAppendHtmlHeaderAndFooter(outputFormat):
-            print(('''<html>
+            print('''<html>
 
 <head>
-    <script type="text/javascript" src="(prefix)/static/scripts/libs/jquery/jquery.js"></script>
-    <link href="(prefix)/static/style/base.css" rel="stylesheet" type="text/css" />
-    <link href="(prefix)/static/style/proto_base.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{prefix}/static/scripts/libs/jquery/jquery.js"></script>
+    <link href="{prefix}/static/style/base.css" rel="stylesheet" type="text/css" />
+    <link href="{prefix}/static/style/proto_base.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 
 <p style="text-align:right"><a href="#debug" onclick="$('.debug').toggle()">Toggle debug</a></p>
 
-<pre>'''.format(prefix=URL_PREFIX)))
+<pre>'''.format(prefix=URL_PREFIX))
         #    print '<div class="debug">Corresponding batch run line:\n', '$Tool[%s](%s)</div>' % (self.toolId, batchargs)
 
 

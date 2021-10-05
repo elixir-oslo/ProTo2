@@ -17,7 +17,7 @@ try:
     numpy2ri.activate()
 
     def replaceNone(obj):
-        if isinstance(obj, basestring):
+        if isinstance(obj, str):
             return obj
 
         if isinstance(obj, collections.Iterable):
@@ -78,8 +78,8 @@ try:
     robjects.conversion.ri2py.register(numpy.generic, lambda x: x)
 
 
-except Exception, e:
-    print "Failed importing rpy2. Error: ", e
+except Exception as e:
+    print("Failed importing rpy2. Error: ", e)
 
 
 def getRVersion():
