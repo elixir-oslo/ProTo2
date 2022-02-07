@@ -72,7 +72,7 @@ def create_app(test_config=None):
                 #'URL': url_for('result', job=os.path.basename(tool_controller.jobFile), _external=True)
                 }
             param_dict.update(trans.request.params)
-            for key in ('cached_options', 'cached_params', 'cached_extra', 'old_values'):
+            for key in ('cached_options', 'cached_params', 'cached_extra', 'old_values', 'mako', 'URL'):
                 param_dict.pop(key)
 
             try:
