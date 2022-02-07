@@ -72,6 +72,7 @@ def create_app(test_config=None):
                 #'URL': url_for('result', job=os.path.basename(tool_controller.jobFile), _external=True)
                 }
             param_dict.update(trans.request.params)
+            del param_dict['cached_options']
             try:
                 #data = gi.tools.run_tool(history_id,'Test1Tool',params)
                 data = gi.tools.run_tool(history_id, 'proto2_run_tool', {"param_dict": json.dumps(param_dict)})
@@ -79,17 +80,17 @@ def create_app(test_config=None):
                 return str(e)
             return redirect(galaxy_url)
 
-    @app.route('/result/<path:job>')
-    def result(job):
-        jobfile = os.path.join(galaxy_work, job)
-        #with open(jobfile) as f:
-        #    data = f.read()
-        #os.unlink(jobfile)
-        return send_file(jobfile)
-
-    @app.route('/shutdown')
-    def shutdown():
-        os.system(app.instance_path + '/shutdown.sh &')
-        return 'shutting down'
+    # @app.route('/result/<path:job>')
+    # def result(job):
+    #     jobfile = os.path.join(galaxy_work, job)
+    #     #with open(jobfile) as f:
+    #     #    data = f.read()
+    #     #os.unlink(jobfile)
+    #     return send_file(jobfile)
+    #
+    # @app.route('/shutdown')
+    # def shutdown():
+    #     os.system(app.instance_path + '/shutdown.sh &')
+    #     return 'shutting down'
 
     return app
