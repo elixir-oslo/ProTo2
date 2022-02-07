@@ -1,6 +1,4 @@
 FROM continuumio/miniconda3:4.10.3
-# newer miniconda image with python > 3.7 breaks flask-mako
-
 
 RUN apt-get --allow-releaseinfo-change update
 RUN apt-get install -y procps net-tools time curl
@@ -18,8 +16,6 @@ RUN conda install python=3.7 flask=1.1.2 bioblend gunicorn numpy rpy2
 # NB: python > 3.7 breaks flask-mako
 RUN pip install flask-mako
 
-#FROM scratch
-#COPY --from=miniconda / /
 
 ENV BASE=/opt/proto
 #ENV PATH=$PATH:/usr/local/bin
