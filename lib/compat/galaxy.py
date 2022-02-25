@@ -32,16 +32,16 @@ class Transaction:
         self.request.POST = patch_dict(request.form)
 
     def css(self, fname):
-        html = '<link rel="stylesheet" type="text/css" href="%s/style/%s.css">' % (self.app.static_url_path, fname)
+        html = '<link rel="stylesheet" type="text/css" href="./%s/style/%s.css">' % (self.app.static_url_path, fname)
         return html
 
     def js(self, fname):
-        html = '<script type="text/javascript" src="%s/%s.js"></script>' % (self.app.static_url_path, fname)
+        html = '<script type="text/javascript" src="./%s/%s.js"></script>' % (self.app.static_url_path, fname)
         return html
 
     def url_for(self, ref):
         ref = ref.lstrip('/')
-        url = url_for(ref)
+        url = '.' + url_for(ref)
         return url
 
     def get_user(self):
