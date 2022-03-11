@@ -5,6 +5,7 @@ galaxy_url = os.getenv('GALAXY_URL')
 galaxy_api_key = os.getenv('API_KEY')
 galaxy_work = os.getenv('GALAXY_WORKING_DIR')
 galaxy_history_id = os.getenv('HISTORY_ID')
+galaxy_output = os.getenv('GALAXY_OUTPUT')
 
 gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
@@ -12,11 +13,16 @@ jobs = gi.jobs.get_jobs(state='running', tool_id='interactive_tool_proto2', hist
 #print(jobs)
 
 for job in jobs:
-  jid = job['id']
-  jinfo = gi.jobs.show_job(jid, full_details=True)
-  print(jinfo)
+  job_id = job['id']
+  job_info = gi.jobs.show_job(job_id, full_details=True)
+  job_cmd = str(job_info['command_line'])
+  if job_cmd.find(galaxy_output) != -1:
+    break
+  #output_id = job_info['outputs']['output'][0]['id']
+  #dataset = gi.datasets.show_dataset(output_id)
+  #ds_job_id = dataset['creating_job']
 
-eps = gi.make_get_request(gi.base_url + '/api/entry_points?running=true').json()
+eps = gi.make_get_request(gi.base_url + '/api/entry_points?job_id=' + job_id).json()
 
 
 print(eps[0]['target'])
