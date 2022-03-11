@@ -9,7 +9,7 @@ export PYTHONPATH=$PYTHONPATH:$HERE/lib
 export FLASK_APP=proto2.flask_app
 #export FLASK_ENV=development
 
-export SCRIPT_NAME=$(python /opt/proto/proto2/check.py)
+export SCRIPT_NAME=$(python proto2/get_proxy_path.py)
 echo $SCRIPT_NAME
 
 #flask run -h 0.0.0.0 -p 5000 > flask.log 2>&1 &
