@@ -24,7 +24,6 @@ for job in jobs:
 
 eps = gi.make_get_request(gi.base_url + '/api/entry_points?job_id=' + job_id).json()
 
-
-print(eps[0]['target'])
-
+target = str(eps[0]['target']).rstrip('/')
+print(target)
 
