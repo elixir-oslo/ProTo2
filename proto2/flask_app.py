@@ -21,10 +21,10 @@ def create_app(test_config=None):
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
     my_url = get_proto2_url(gi, galaxy_history_id, galaxy_output)
-    static_url_path = os.path.join(my_url, 'static')
-    print(static_url_path)
+    #static_url_path = os.path.join(my_url, 'static')
+    #print(static_url_path)
 
-    app = Flask(__name__, instance_relative_config=True, static_url_path=static_url_path)
+    app = Flask(__name__, instance_relative_config=True)
 
     mako = MakoTemplates(app)
     #try:
