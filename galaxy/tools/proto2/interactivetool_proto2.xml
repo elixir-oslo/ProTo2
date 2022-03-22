@@ -1,29 +1,31 @@
 <tool id="interactive_tool_proto2" tool_type="interactive" name="Interactive ProTo service" version="0.0.1">
     <requirements>
-        <container type="docker">proto2-test:latest</container>
+        <container type="docker">localhost/proto2-test:latest</container>
     </requirements>
     <entry_points>
-        <entry_point name="ProTo2 Interactive Tool" requires_domain="True">
+        <entry_point name="ProTo2 Interactive Tool" requires_domain="False">
             <port>5000</port>
         </entry_point>
     </entry_points>
     <environment_variables>
         <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
+        <environment_variable name="USER_EMAIL">$__user_email__</environment_variable>
         <environment_variable name="REMOTE_HOST">$__galaxy_url__</environment_variable>
-        <environment_variable name="GALAXY_WEB_PORT">8080</environment_variable>
         <environment_variable name="GALAXY_URL">$__galaxy_url__</environment_variable>
         <environment_variable name="API_KEY" inject="api_key" />
     </environment_variables>
     <command detect_errors="exit_code"><![CDATA[
     	export GALAXY_WORKING_DIR=`pwd` &&
     	export GALAXY_OUTPUT='$output' &&
-    	mkdir files &&
+	#if $input:
+    	  cp '$input' rerun.json &&
+	#end if
     	
-		/opt/proto/run.sh
+	/opt/proto/run.sh
     ]]>
     </command>
     <inputs>
-        <param name="input" type="data" optional="true" label="Include data into the environment"/>
+        <param name="input" type="data" optional="true" label="xxx"/>
 
     </inputs>
     <outputs>
