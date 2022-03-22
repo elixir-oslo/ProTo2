@@ -19,3 +19,6 @@ gunicorn -b 0.0.0.0:5000 -p flask.pid --log-file flask.log --reload "$FLASK_APP:
 #cat flask.pid
 #trap 'kill $(cat flask.pid)' INT
 #wait
+
+cat flask.log >> $GALAXY_OUTPUT
+
