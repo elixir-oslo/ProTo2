@@ -8,10 +8,23 @@ from compat.galaxy import Transaction
 from proto.config.Config import PROTO_TOOL_SHELVE_FN
 from proto.generictool import getController
 from proto.ProtoToolRegister import initInstalledProtoTools
-
+from get_proxy_path import get_proto2_url
 
 def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
+
+    galaxy_url = os.getenv('GALAXY_URL', 'http://localhost.norgene.no:8080')
+    galaxy_api_key = os.getenv('API_KEY', '467bf4df60d0985fac4c9d63a7bc1aa3')
+    galaxy_output = os.getenv('GALAXY_OUTPUT', tempfile.mkstemp()[1])
+    galaxy_work = os.getenv('GALAXY_WORKING_DIR', 'instance/files')
+    galaxy_history_id = os.getenv('HISTORY_ID', None)
+
+    gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
+
+    my_url = get_proto2_url(gi, galaxy_history_id, galaxy_output)
+    static_url_path = os.path.join(my_url, 'static')
+    print(static_url_path)
+
+    app = Flask(__name__, instance_relative_config=True, static_url_path=static_url_path)
 
     mako = MakoTemplates(app)
     #try:
@@ -19,13 +32,6 @@ def create_app(test_config=None):
     #except RuntimeError:
     #    app.config.from_pyfile('config/dev.py')
 
-    galaxy_url = os.getenv('GALAXY_URL', 'http://localhost.norgene.no:8080')
-    galaxy_api_key = os.getenv('API_KEY', '467bf4df60d0985fac4c9d63a7bc1aa3')
-    galaxy_output = os.getenv('GALAXY_OUTPUT', tempfile.mkstemp()[1])
-    galaxy_work = os.getenv('GALAXY_WORKING_DIR', os.path.join(app.instance_path, 'files'))
-    galaxy_history_id = os.getenv('HISTORY_ID', None)
-
-    gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
     meta = {
         'title': 'ProTo2 test app'
@@ -35,7 +41,6 @@ def create_app(test_config=None):
 
     @app.route('/', methods=['GET','POST'])
     def index():
-
         trans = Transaction(app, gi, request)
 
         if 'tool_id' in trans.request.params:
