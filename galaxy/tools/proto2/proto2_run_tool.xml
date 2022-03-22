@@ -16,7 +16,7 @@
     <command detect_errors="exit_code"><![CDATA[
     	export GALAXY_WORKING_DIR=`pwd` &&
     	export GALAXY_OUTPUT='$output' &&
-    	mkdir files &&
+    	mkdir files && 
 	sh /opt/proto/run-tool.sh 'inputs.json'
     ]]>
     </command>
