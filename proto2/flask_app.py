@@ -4,11 +4,11 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_mako import MakoTemplates, render_template as render_mako
 from bioblend.galaxy import GalaxyInstance
 
-from compat.galaxy import Transaction
+from compat.galaxy import Transaction, get_proto2_url
 from proto.config.Config import PROTO_TOOL_SHELVE_FN
 from proto.generictool import getController
 from proto.ProtoToolRegister import initInstalledProtoTools
-from get_proxy_path import get_proto2_url
+
 
 def create_app(test_config=None):
 
