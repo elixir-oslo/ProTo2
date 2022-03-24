@@ -92,7 +92,7 @@ def create_app(test_config=None):
         logfile = galaxy_output
         #with open(logfile) as f:
         #    data = f.read()
-        return send_file(logfile, 'text/plain')
+        return send_file(logfile, 'text/plain', cache_timeout=10)
 
     # @app.route('/result/<path:job>')
     # def result(job):
