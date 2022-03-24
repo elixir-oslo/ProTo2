@@ -1,0 +1,5 @@
+.idea
+*.log
+*.bak
+**/__pycache__/
+/instance/files/
