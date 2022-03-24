@@ -87,6 +87,13 @@ def create_app(test_config=None):
                 return str(e)
             return redirect(galaxy_url)
 
+    @app.route('/log')
+    def log():
+        logfile = galaxy_output
+        #with open(logfile) as f:
+        #    data = f.read()
+        return send_file(logfile)
+
     # @app.route('/result/<path:job>')
     # def result(job):
     #     jobfile = os.path.join(galaxy_work, job)
