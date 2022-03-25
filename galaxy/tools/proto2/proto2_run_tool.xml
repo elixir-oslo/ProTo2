@@ -18,7 +18,7 @@
     	export GALAXY_OUTPUT='$output' &&
     	export GALAXY_OUTPUT_ID='$output.id' &&
     	mkdir files && 
-	sh /opt/proto/run-tool.sh 'inputs.json'
+	conda run -n proto2 /opt/proto/run-tool.sh 'inputs.json'
     ]]>
     </command>
     <inputs>

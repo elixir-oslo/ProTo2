@@ -1,6 +1,6 @@
 <tool id="interactive_tool_proto2" tool_type="interactive" name="Interactive ProTo service" version="0.0.1">
     <requirements>
-        <container type="docker">localhost/proto2-test:latest</container>
+        <container type="docker">proto2.norgene.no/proto2-test:latest</container>
     </requirements>
     <entry_points>
         <entry_point name="ProTo2 Interactive Tool" requires_domain="False">
@@ -21,7 +21,7 @@
     	  cp '$input' rerun.json &&
 	#end if
     	
-	/opt/proto/run.sh
+	conda run -n proto2 /opt/proto/run.sh
     ]]>
     </command>
     <inputs>
