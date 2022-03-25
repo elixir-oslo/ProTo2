@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash --login
+
+conda activate proto2
 
 HERE=$(dirname "$0")
 INPUTS=$1
