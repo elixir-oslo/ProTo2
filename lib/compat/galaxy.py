@@ -42,6 +42,8 @@ class Transaction:
         self.request = request
         params = MultiDict(request.args)
         params.update(request.form)
+        if 'proto_tool_id' in params:
+            params['tool_id'] = params['proto_tool_id']
         #print(params)
         self.request.params = patch_dict(params)
         self.request.GET = patch_dict(request.args)
