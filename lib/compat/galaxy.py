@@ -73,4 +73,8 @@ class Transaction:
         return genomes
 
     def get_history(self):
-        return GalaxyHistory(self.galaxy)
+        try:
+            return GalaxyHistory(self.galaxy)
+        except Exception as e:
+            print(e)
+            return None
