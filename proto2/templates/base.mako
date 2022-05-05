@@ -24,7 +24,9 @@
     <div id="help_${what}" class="infomessagesmall help">help</div>
 </%def>
 
+<!--
     <div id="proto2-header"><p><a href="${h.galaxy.base_url}">Galaxy</a> | <a href="${h.url_for('index')}">Tools</a> | <a href="${h.url_for('log')}">Log</a></div>
+-->
 
     <div id="__disabled"></div>
     <div class="toolForm">

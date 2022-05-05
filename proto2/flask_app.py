@@ -20,7 +20,7 @@ def create_app(test_config=None):
 
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
-    my_url = get_proto2_url(gi, galaxy_history_id, galaxy_output)
+    #my_url = get_proto2_url(gi, galaxy_history_id, galaxy_output)
     #static_url_path = os.path.join(my_url, 'static')
     #print(static_url_path)
 
@@ -85,7 +85,8 @@ def create_app(test_config=None):
                 data = gi.tools.run_tool(history_id, 'proto2_run_tool', {"param_dict": json.dumps(param_dict)})
             except Exception as e:
                 return str(e)
-            return redirect(galaxy_url)
+            #return redirect(galaxy_url)
+            return data
 
     @app.route('/log')
     def log():
