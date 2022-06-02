@@ -88,6 +88,18 @@ def create_app(test_config=None):
             #return redirect(galaxy_url)
             return data
 
+    @app.route('/rerun/<dataset_id>')
+    def rerun(dataset_id):
+        #if id in request.args:
+        #    dataset_id = request.args['id']
+        dataset = gi.datasets.show_dataset(dataset_id)
+        job_id = dataset['creating_job']
+        job = gi.jobs.show_job(job_id)
+        param_dict = job['params']['param_dict']
+        params = json.loads(json.loads(param_dict))
+        #return params
+        return redirect(url_for('index', **params))
+
     @app.route('/log')
     def log():
         logfile = galaxy_output
