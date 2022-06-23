@@ -82,7 +82,12 @@ def create_app(test_config=None):
 
             try:
                 #data = gi.tools.run_tool(history_id,'Test1Tool',params)
-                data = gi.tools.run_tool(history_id, 'proto2_run_tool', {"param_dict": json.dumps(param_dict)})
+                data = gi.tools.run_tool(history_id, param_dict['tool_id'], {
+                    "param_dict": json.dumps(param_dict),
+                    "interactivetool_id": "xxx",
+                    "interactivetool_name": "xxx",
+                    "proto_tool_id": tool_controller.toolId
+                })
             except Exception as e:
                 return str(e)
             #return redirect(galaxy_url)
@@ -98,7 +103,7 @@ def create_app(test_config=None):
         param_dict = job['params']['param_dict']
         params = json.loads(json.loads(param_dict))
         #return params
-        return redirect(url_for('index', **params))
+        return redirect('./..' + url_for('index', **params))
 
     @app.route('/log')
     def log():
