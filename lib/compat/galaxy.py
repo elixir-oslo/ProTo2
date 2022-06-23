@@ -1,3 +1,4 @@
+import json
 from collections import namedtuple
 from werkzeug.datastructures import MultiDict
 from flask import url_for
@@ -44,7 +45,12 @@ class Transaction:
         params.update(request.form)
         if 'proto_tool_id' in params:
             params['tool_id'] = params['proto_tool_id']
-        #print(params)
+        if 'param_dict' in params:
+            try:
+                params.update(json.loads(params['param_dict']))
+            except json.JSONDecodeError as e:
+                print(e)
+        print(params)
         self.request.params = patch_dict(params)
         self.request.GET = patch_dict(request.args)
         self.request.POST = patch_dict(request.form)
