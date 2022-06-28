@@ -41,7 +41,7 @@ def create_app(test_config=None):
 
     @app.route('/', methods=['GET','POST'])
     def index():
-        trans = Transaction(app, gi, request)
+        trans = Transaction(gi, app, request)
 
         if 'tool_id' in trans.request.params:
             tool_controller = getController(trans)
@@ -52,7 +52,7 @@ def create_app(test_config=None):
 
     @app.route('/tool_runner', methods=['POST'])
     def tool_runner():
-        trans = Transaction(app, gi, request)
+        trans = Transaction(gi, app, request)
 
         if 'tool_id' in request.form:
             tool_controller = getController(trans)

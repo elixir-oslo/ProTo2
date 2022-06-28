@@ -247,8 +247,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
             else:
                 return '', 10, True
         except Exception as e:
-            pass
-        return str(e)
+            return str(e)
 
     @classmethod
     def getOptionsBoxCheckBox(cls, prevChoices):

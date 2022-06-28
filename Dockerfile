@@ -22,7 +22,7 @@ RUN mamba create -y -n proto2 python=3.7
 #RUN echo "mamba activate proto2" >> ~/.bashrc
 
 #RUN conda install flask=1.1.2 itsdangerous=2.0.1 jinja2=3.0.3 bioblend gunicorn numpy r-base=3.6.3 rpy2
-RUN mamba install -y -n proto2 flask=1.1.2 itsdangerous=2.0.1 jinja2=3.0.3 bioblend gunicorn numpy rpy2
+RUN mamba install -y -n proto2 flask=1.1.2 itsdangerous=2.0.1 jinja2=3.0.3 werkzeug=2.0.3 bioblend gunicorn numpy rpy2 pycryptodome
 
 #RUN conda clean -a
 

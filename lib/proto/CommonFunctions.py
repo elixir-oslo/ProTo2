@@ -9,6 +9,7 @@ from proto.config.Config import OUTPUT_PRECISION
 from proto.config.Security import galaxySecureEncodeId, galaxySecureDecodeId, \
     GALAXY_SECURITY_HELPER_OBJ
 
+from compat.galaxy import GalaxyConnection
 
 """
 Note on datasetInfo and datasetId (used in several functions):
@@ -161,7 +162,8 @@ def extractFnFromDatasetInfo(datasetInfo):
     if isinstance(datasetInfo, str):
         datasetInfo = datasetInfo.split(':')
     try:
-        return getGalaxyFnFromEncodedDatasetId(datasetInfo[2])
+        return GalaxyConnection().get_dataset_path(datasetInfo[2])
+        #return getGalaxyFnFromEncodedDatasetId(datasetInfo[2])
     except TypeError:
         # full path, not id
         return datasetInfo[2]
@@ -184,7 +186,8 @@ def extractNameFromDatasetInfo(datasetInfo):
         datasetInfo = datasetInfo.split(':')
 
     from urllib.parse import unquote
-    return unquote(str(datasetInfo[-1])).decode('utf-8')
+#    return unquote(str(datasetInfo[-1])).decode('utf-8')
+    return unquote(str(datasetInfo[-1]))
 
 
 def getSecureIdAndExtFromDatasetInfoAsStr(datasetInfo):
@@ -229,7 +232,7 @@ def getLoadToGalaxyHistoryURL(fn, genome='', galaxyDataType='bed', urlPrefix=Non
         urlPrefix = URL_PREFIX
 
     import base64
-    encodedFn = base64.urlsafe_b64encode(GALAXY_SECURITY_HELPER_OBJ.encode_guid(fn.encode('utf-8')))
+    encodedFn = base64.urlsafe_b64encode(GALAXY_SECURITY_HELPER_OBJ.encode_guid(fn.encode('utf-8'))).decode('utf-8')
 
     assert galaxyDataType is not None
     return urlPrefix + '/tool_runner?tool_id=file_import' + \

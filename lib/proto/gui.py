@@ -125,14 +125,11 @@ class GalaxyWrapper:
         return items
 
     def makeHistoryOption(self, dataset, select=None, sep=':'):
-        assert sep in (',', ':')
+        assert sep in ':'
         name = dataset.name.replace('[', '(').replace(']', ')')
         sel_id = self.getHistoryOptionId(select)
 
-        if sep == ',':
-            vals = ['galaxy', self.encode_id(dataset.dataset_id), dataset.extension]
-        else:
-            vals = ['galaxy', dataset.extension, self.encode_id(dataset.dataset_id), self.makeHistoryOptionName(dataset)]
+        vals = ['galaxy', dataset.extension, self.encode_id(dataset.dataset_id), self.makeHistoryOptionName(dataset)]
 
         val = sep.join(vals)
         sel_param = selected(dataset.dataset_id, sel_id)
@@ -148,17 +145,13 @@ class GalaxyWrapper:
         id_sel = self.getHistoryOptionSecureIdAndExt(select)[0]
         sel_id = None
         if id_sel:
-            sep = select[6]
             try:
                 sel_id = self.decode_id(id_sel)
             except:
-                if sep == ',':
-                    sel_id = int(id_sel)
-                elif id_sel and os.path.exists(id_sel):
+                if id_sel and os.path.exists(id_sel):
                     sel_id = int(re.findall(r'/dataset_([0-9]+)\.dat', id_sel)[0])
-        #else:
-        #    sel_id = 0
-        return sel_id
+        #return sel_id
+        return id_sel
 
     def makeHistoryOptionName(self, dataset):
         name = dataset.name.replace('[', '(').replace(']', ')')

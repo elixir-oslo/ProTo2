@@ -18,8 +18,8 @@ import proto.gui as gui
 <%def name="select(name, opts, value, label = None, info = None)">
     <p><label>${label if label is not None else name}
     <select name="${name}" onchange="reloadForm(form, this)">
-        %for o in range(len(opts)):
-            <option value="${opts[o]}" ${'selected' if value == opts[o] else ''}>${opts[o]}</option>
+        %for opt in opts:
+            <option value="${opt}" ${'selected' if value == opt else ''}>${opt}</option>
         %endfor
     </select>
     </label>

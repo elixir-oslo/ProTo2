@@ -6,7 +6,8 @@ from proto.config.GalaxyConfigParser import GalaxyConfigParser
 
 
 def galaxyGetSecurityHelper():
-    from galaxy.web.security import SecurityHelper
+    #from galaxy.web.security import SecurityHelper
+    from compat.galaxy import SecurityHelper
 
     config = GalaxyConfigParser()
     id_secret = config.getWithDefault('proto_id_secret',

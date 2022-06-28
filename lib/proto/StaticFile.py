@@ -38,14 +38,14 @@ class StaticFile(object):
         return os.sep.join([self.STATIC_REL_PATH] + self._id)
 
     def getLink(self, linkText):
-        return unicode(HtmlCore().link(linkText, self.getURL()))
+        return str(HtmlCore().link(linkText, self.getURL()))
         #return '<a href=%s>%s</a>' % (self.getURL(), linkText)
 
     def getEmbeddedImage(self):
-        return unicode(HtmlCore().image(self.getURL()))
+        return str(HtmlCore().image(self.getURL()))
 
     def getLoadToHistoryLink(self, linkText, galaxyDataType='bed', histElementName=None):
-        return unicode(HtmlCore().link(
+        return str(HtmlCore().link(
             linkText, getLoadToGalaxyHistoryURL(
                 self.getDiskPath(relativeToBase=True),
                 galaxyDataType=galaxyDataType,
@@ -97,7 +97,7 @@ class StaticFile(object):
         any extra params in kwArgs is sent to r.plot. Use to send for example xlab,ylab
         '''
         from proto.RSetup import r
-        numLines = range(len(yLines))
+        numLines = list(range(len(yLines)))
 
         if alsoOpenAndClose:
             self.openRFigure()
@@ -177,11 +177,11 @@ class GalaxyRunSpecificFile(StaticFile):
 
 class PickleStaticFile(StaticFile):
     def storePickledObject(self, obj):
-        from cPickle import dump
+        from pickle import dump
         dump(obj, self.getFile())
 
     def loadPickledObject(self):
-        from cPickle import load
+        from pickle import load
         return load( self.getFile('r') )
 
 

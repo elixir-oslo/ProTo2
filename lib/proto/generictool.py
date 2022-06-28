@@ -480,8 +480,8 @@ class GenericToolController(BaseToolController):
             for key in list(self.params.keys()):
                 if key.startswith(id + '|'):
                     values[key.split('|')[1]] = self.params[key]
-            choice = OrderedDict(sorted(list(values.items()), \
-                                        key=lambda t: int(t[0]) if opts[0] == '__multihistory__' else t[0]))
+            choice = OrderedDict(sorted(list(values.items()), key=lambda t: t[0]))
+#        key = lambda t: int(t[0]) if opts[0] == '__multihistory__' else t[0]))
 
         if isinstance(opts, dict):
             values = type(opts)()

@@ -1,3 +1,4 @@
+import html
 import os
 
 import shutil
@@ -299,7 +300,7 @@ class ProtoGuiTestTool3(GeneralGuiTool):
             core.header('File contents')
             core.fieldsetBegin('Ten first lines of file: ' +
                                extractNameFromDatasetInfo(datasetInfo))
-            core.preformatted(''.join([cgi.escape(inFile.readline()).decode('utf-8', 'ignore')
+            core.preformatted(''.join([html.escape(inFile.readline())
                                        for _ in range(10)]))
             core.fieldsetEnd()
 
