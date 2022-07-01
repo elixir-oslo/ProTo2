@@ -495,7 +495,7 @@ class ProtoGuiTestTool3(GeneralGuiTool):
         the name of the tool.
         """
         if cls._numberOfHistoriesSelected(choices) > 0:
-            print(cls._numberOfHistoriesSelected(choices))
+            #print(cls._numberOfHistoriesSelected(choices))
             if choices.oneOrMany == cls.MULTIPLE_HISTORY_TEXT:
                 historyName = cls._getNamesForSelectedHistories(choices)[0]
             else:

@@ -12,13 +12,13 @@ from proto.generictool import getController
 from proto.ProtoToolRegister import initInstalledProtoTools
 initInstalledProtoTools()
 
-print(sys.argv[1])
+#print(sys.argv[1])
 #sys.path = sys.path[1:]  # to remove the '/proto' directory from the Python path
 toolCtrl = getController(None, sys.argv[1])
 toolCtrl.execute()
 
-outName = toolCtrl.prototype.getOutputName()
-outFormat = toolCtrl.prototype.getOutputFormat()
+outName = toolCtrl.prototype.getOutputName(toolCtrl.choices)
+outFormat = toolCtrl.prototype.getOutputFormat(toolCtrl.choices)
 
 with open('galaxy.json', 'w') as f:
     f.writelines([

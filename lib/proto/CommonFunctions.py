@@ -134,6 +134,8 @@ def getGalaxyFnFromAnyDatasetId(id, galaxyFilePath=None):
 
 
 def getGalaxyFilesDir(galaxyFn):
+    if galaxyFn.endswith('_files'):
+        return galaxyFn
     return galaxyFn[:-4] + '_files'
 
 

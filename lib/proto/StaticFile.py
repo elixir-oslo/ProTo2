@@ -4,6 +4,7 @@ from proto.CommonFunctions import ensurePathExists, getLoadToGalaxyHistoryURL, \
 from proto.HtmlCore import HtmlCore
 import os
 
+from compat.galaxy import GalaxyConnection
 
 class StaticFile(object):
     STATIC_DIR = STATIC_DIR
@@ -156,7 +157,8 @@ class GalaxyRunSpecificFile(StaticFile):
         #StaticFile.__init__(self, getUniqueRunSpecificId(galaxyId + id))
 
     def getDiskPath(self, ensurePath=False, relativeToBase=False):
-        path = self._galaxyFn
+        #path = self._galaxyFn
+        path = GalaxyConnection().get_extra_files_path()
         if relativeToBase:
             if path.startswith(GALAXY_BASE_DIR):
                 path = path[len(GALAXY_BASE_DIR):]

@@ -43,24 +43,33 @@ class GalaxyHistoryDataset:
 
 
 class GalaxyHistory:
+    _cache = {}
+
     def __init__(self, gi):
-        self.history = gi.histories.get_most_recently_used_history()
-        hds = gi.histories.show_history(self.history['id'], contents=True, deleted=False, visible=True, details='all')
-        #hds = gi.datasets.get_datasets(history_id=self.history['id'], deleted=False, visible=True) # no details
-        self.active_datasets = [GalaxyHistoryDataset(ds) for ds in hds]
+        history = gi.histories.get_most_recently_used_history()
+        hid = history['id']
+        if hid not in self._cache or self._cache[hid]['update_time'] != history['update_time']:
+            self._cache[hid] = history
+            hds = gi.histories.show_history(hid, contents=True, deleted=False, visible=True, details='all')
+            #hds = gi.datasets.get_datasets(history_id=self.history['id'], deleted=False, visible=True) # no details
+            self._cache[hid]['active_datasets'] = [GalaxyHistoryDataset(ds) for ds in hds]
+        self.active_datasets = self._cache[hid]['active_datasets']
 
 
 class GalaxyConnection:
     galaxy = None
+    genomes = None
 
     def __init__(self, galaxy_instance=None):
         if self.galaxy is None:
             if galaxy_instance is None:
                 galaxy_url = os.getenv('GALAXY_URL')
                 galaxy_api_key = os.getenv('API_KEY')
+
                 self.galaxy = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
             else:
                 self.galaxy = galaxy_instance
+            self.history_id = os.getenv('HISTORY_ID')
 
     def get_user(self):
         user_dict = self.galaxy.users.get_current_user()
@@ -68,9 +77,10 @@ class GalaxyConnection:
         return user
 
     def get_genome_build_names(self):
-        genomes = self.galaxy.genomes.get_genomes()
+        if self.genomes is None:
+            self.genomes = self.galaxy.genomes.get_genomes()
         #print(genomes)
-        return genomes
+        return self.genomes
 
     def get_history(self):
         try:
@@ -80,16 +90,17 @@ class GalaxyConnection:
             return None
 
     def get_dataset_path(self, dataset_id):
-        #ds = self.galaxy.datasets.show_dataset(dataset_id)
-        #url = self.galaxy.base_url + ds['download_url']
-        #data = self.galaxy.make_get_request(url)
-        file_name = os.getcwd() + '/dataset_' + dataset_id + '.dat'
-        #data_file = open(file_name, 'wb')
-        #data_file.write(data.content)
-        #data_file.close()
-        self.galaxy.datasets.download_dataset(dataset_id, file_name, use_default_filename=False)
-        #data = requests.get(url)
+        ds = self.galaxy.datasets.show_dataset(dataset_id)
+        file_name = os.path.join(os.getcwd(), 'dataset_' + dataset_id + '.dat')
+        if not os.path.exists(file_name):
+            self.galaxy.datasets.download_dataset(dataset_id, file_name, use_default_filename=False)
         return file_name
+
+    def get_new_dataset_path(self):
+        return os.path.join(os.getenv('GALAXY_WORKING_DIR'), 'dataset_files')
+
+    def get_extra_files_path(self):
+        return os.getenv('GALAXY_OUTPUT_FILES_PATH')
 
 
 class Transaction(GalaxyConnection):

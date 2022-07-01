@@ -6,6 +6,7 @@ import logging
 import sys, os, json, shelve
 import pickle
 import bz2
+import urllib.parse
 import zlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode, b64encode, b64decode
 from collections import namedtuple, OrderedDict, defaultdict
@@ -20,6 +21,7 @@ from proto.config.Security import galaxySecureEncodeId, galaxySecureDecodeId, GA
 from proto.BaseToolController import BaseToolController
 from proto.ProtoToolRegister import getToolPrototype
 from proto.StaticFile import StaticImage
+from compat.galaxy import GalaxyConnection
 
 log = logging.getLogger( __name__ )
 
@@ -522,6 +524,7 @@ class GenericToolController(BaseToolController):
 
         ChoiceTuple = namedtuple('ChoiceTuple', self.inputIds)
         choices = ChoiceTuple._make(self.inputValues)
+        self.choices = choices
 
         #batchargs = '|'.join([';'.join(c.itervalues()) if not isinstance(c, basestring) else c for c in choices])
         #batchargs = '|'.join([repr(c.items()) if not isinstance(c, basestring) else c for c in choices])
@@ -559,11 +562,15 @@ class GenericToolController(BaseToolController):
             else:
                 extra_hist_elements = self.prototype.getExtraHistElements(choices)
             if isinstance(extra_hist_elements, list):
-                for output in extra_hist_elements:
+                for i, output in enumerate(extra_hist_elements):
                     if isinstance(output, HistElement):
                         self.extraGalaxyFn[str(output.name)] = self.params[output.name]
                     else:
-                        self.extraGalaxyFn[str(output[0])] = self.params[output[0]]
+                        # self.extraGalaxyFn[str(output[0])] = self.params[output[0]]
+                        dataset_files_path = GalaxyConnection().get_new_dataset_path()
+                        #os.mkdir(extra_files_path + str(i))
+                        self.extraGalaxyFn[str(output[0])] = dataset_files_path + '/' + str(i) + '_' \
+                                                             + urllib.parse.quote_plus(output[0]) + '.' + output[1]
 
 
         username = self.params['userEmail'] if 'userEmail' in self.params else ''
