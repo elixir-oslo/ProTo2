@@ -1,0 +1,14 @@
+.~
+.idea
+.stversions
+.venv*
+**.old
+**.log
+**.log.?
+**.lck
+**.pid
+**.pyc
+**.sqlite
+**.DS_Store
+.git
+.svn
