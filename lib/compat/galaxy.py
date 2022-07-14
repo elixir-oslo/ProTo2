@@ -25,10 +25,6 @@ def get_proto2_url(gi, galaxy_history_id, galaxy_output):
     return target
 
 
-class SecurityHelper:
-    pass
-
-
 class GalaxyHistoryDataset:
     def __init__(self, dataset):
         self.name = dataset['name']

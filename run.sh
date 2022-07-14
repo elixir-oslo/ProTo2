@@ -12,7 +12,7 @@ export FLASK_APP=proto2.flask_app
 #export SCRIPT_NAME=$(python proto2/get_proxy_path.py)
 #echo $SCRIPT_NAME
 
-LOG=$GALAXY_OUTPUT
+#LOG=$GALAXY_OUTPUT
 echo "ProTo2 starting." > $LOG
 #tail -f flask.log >> $GALAXY_OUTPUT &
 
