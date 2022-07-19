@@ -25,7 +25,7 @@ def create_app(test_config=None):
     #static_url_path = os.path.join(my_url, 'static')
     #print(static_url_path)
 
-    app = Flask(__name__, instance_relative_config=True, debug=flask_debug)
+    app = Flask(__name__, instance_relative_config=True)
 
     mako = MakoTemplates(app)
     #try:
