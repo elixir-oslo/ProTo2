@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+    If the value of 'URL_method' is 'get', the request will consist of the value of 'URL' coming back in
+    the initial response.  If value of 'URL_method' is 'post', any additional params coming back in the
+    initial response ( in addition to 'URL' ) will be encoded and appended to URL and a post will be performed.
+-->
+<tool name="Debug import of ProTo tools" id="proto_debug_tool_import_tool" tool_type="interactive_client_tool" version="0.0.1">
+    <description>test</description>
+    <requirements>
+        <container type="docker">proto2-test:latest</container>
+    </requirements>
+        <configfiles>
+                <inputs name="inputs" filename="inputs.json" />
+        </configfiles>
+
+    <environment_variables>
+        <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
+        <environment_variable name="REMOTE_HOST">$__galaxy_url__</environment_variable>
+        <environment_variable name="GALAXY_WEB_PORT">8080</environment_variable>
+        <environment_variable name="GALAXY_URL">$__galaxy_url__</environment_variable>
+        <environment_variable name="API_KEY" inject="api_key" />
+    </environment_variables>
+    <command detect_errors="exit_code"><![CDATA[
+        export GALAXY_WORKING_DIR=`pwd` &&
+        export GALAXY_OUTPUT='$output' &&
+        export GALAXY_OUTPUT_ID='$output.id' &&
+        mkdir files && 
+        conda run -n proto2 /opt/proto/run-tool.sh 'inputs.json'
+    ]]>
+    </command>
+    <!--    <inputs action="/" check_values="false" method="get"> -->
+    <inputs action="interactive_tool_proto2:ProTo2 Interactive Tool"> 
+        <param name="interactive_tool_id" type="hidden" value="interactive_tool_proto2" />
+        <param name="interactive_tool_entry_name" type="hidden" value="ProTo2 Interactive Tool" />
+        <param name="proto_tool_id" type="hidden" value="proto_debug_tool_import_tool" />
+    <!-- 
+        <param name="param_dict" type="hidden" value="" />
+    -->
+    <param name="param_dict" type="text" area="true" label="Tool params" value="">
+        	<sanitizer sanitize="false" />
+        </param>
+    </inputs>
+
+    <outputs>
+	<data name="output" format="html" label="ProTo2 tool output">
+                <discover_datasets pattern="__designation_and_ext__" directory="files" visible="true" />
+        </data>
+    </outputs>
+
+    <options sanitize="False" refresh="False"/>
+
+    <tests>
+    </tests>
+    <help>
+    </help>
+</tool>

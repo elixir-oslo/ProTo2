@@ -39,6 +39,7 @@ def initInstalledProtoTools():
     tool_register['proto_proto_gui_test_tool5'] = ('proto.tools.guitest.ProtoGuiTestTool5', 'ProtoGuiTestTool5', None)
     tool_register['proto_proto_gui_test_tool6'] = ('proto.tools.guitest.ProtoGuiTestTool6', 'ProtoGuiTestTool6', None)
     tool_register['proto_proto_gui_test_tool7'] = ('proto.tools.guitest.ProtoGuiTestTool7', 'ProtoGuiTestTool7', None)
+    tool_register['proto_debug_tool_import_tool'] = ('proto.tools.DebugToolImportTool', 'DebugToolImportTool', None)
     tool_list = dict(tool_register)
     tool_register.close()
     return tool_list
