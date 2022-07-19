@@ -3,3 +3,6 @@
 *.bak
 **/__pycache__/
 /instance/files/
+.stignore
+.stfolder
+database
