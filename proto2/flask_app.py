@@ -17,8 +17,7 @@ def create_app(test_config=None):
     galaxy_output = os.getenv('GALAXY_OUTPUT', tempfile.mkstemp()[1])
     galaxy_work = os.getenv('GALAXY_WORKING_DIR', 'instance/files')
     galaxy_history_id = os.getenv('HISTORY_ID', None)
-    flask_debug = os.getenv('FLASK_DEBUG', None)
-    print("FLASK_DEBUG={}".format(flask_debug))
+    flask_debug = os.getenv('FLASK_DEBUG', False)
 
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
@@ -26,7 +25,7 @@ def create_app(test_config=None):
     #static_url_path = os.path.join(my_url, 'static')
     #print(static_url_path)
 
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, debug=flask_debug)
 
     mako = MakoTemplates(app)
     #try:
@@ -47,16 +46,7 @@ def create_app(test_config=None):
 
         if 'tool_id' in trans.request.params:
             tool_controller = getController(trans)
-            import cProfile, pstats
-            from io import StringIO
-            cProfile.run("ret = render_mako('generictool.mako', control=tool_controller, h=trans)", filename='stats')
-            # return render_mako('generictool.mako', control=tool_controller, h=trans)
-
-            with StringIO() as stream:
-                stats = pstats.Stats('stats', stream=stream)
-                stats.sort_stats('time')
-                stats.print_stats()
-                return stream.getvalue()
+            return render_mako('generictool.mako', control=tool_controller, h=trans)
         else:
             data = {'tools': tool_list}
             return render_template('index.html', meta=meta, data=data)
