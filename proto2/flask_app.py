@@ -17,6 +17,8 @@ def create_app(test_config=None):
     galaxy_output = os.getenv('GALAXY_OUTPUT', tempfile.mkstemp()[1])
     galaxy_work = os.getenv('GALAXY_WORKING_DIR', 'instance/files')
     galaxy_history_id = os.getenv('HISTORY_ID', None)
+    flask_debug = os.getenv('FLASK_DEBUG', None)
+    print("FLASK_DEBUG={}".format(flask_debug))
 
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
@@ -45,7 +47,16 @@ def create_app(test_config=None):
 
         if 'tool_id' in trans.request.params:
             tool_controller = getController(trans)
-            return render_mako('generictool.mako', control=tool_controller, h=trans)
+            import cProfile, pstats
+            from io import StringIO
+            cProfile.run("ret = render_mako('generictool.mako', control=tool_controller, h=trans)", filename='stats')
+            # return render_mako('generictool.mako', control=tool_controller, h=trans)
+
+            with StringIO() as stream:
+                stats = pstats.Stats('stats', stream=stream)
+                stats.sort_stats('time')
+                stats.print_stats()
+                return stream.getvalue()
         else:
             data = {'tools': tool_list}
             return render_template('index.html', meta=meta, data=data)
@@ -111,6 +122,20 @@ def create_app(test_config=None):
         #with open(logfile) as f:
         #    data = f.read()
         return send_file(logfile, 'text/plain', cache_timeout=10)
+
+    # @app.errorhandler(Exception)
+    # def handle_exception(e):
+    #     """Return JSON instead of HTML for HTTP errors."""
+    #     # start with the correct headers and status code from the error
+    #     response = e.get_response()
+    #     # replace the body with JSON
+    #     response.data = json.dumps({
+    #         "code": e.code,
+    #         "name": e.name,
+    #         "description": e.description,
+    #     })
+    #     response.content_type = "application/json"
+    #     return response
 
     # @app.route('/result/<path:job>')
     # def result(job):
