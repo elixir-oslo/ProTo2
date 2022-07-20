@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "proto2"
+version = "2.0a1"
+description = "Galaxy Prototyping Tool API 2.0"
+authors = ["Morten Johansen, Sveinung Gundersen <sveinugu@gmail.com>"]
+license = "AFL3.0"
+
+[tool.poetry.dependencies]
+python = "~3.7"
+conda-lock = "^1.1.1"
+fastapi = "^0.79.0"
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+bioblend = "^0.18.0"
+pycryptodome = "^3.15.0"
+Mako = "1.1.6"
+FastAPI-Mako = "^0.6.2"
+rpy2 = "3.5.1"
+numpy = "1.21.6"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+flake8-quotes = "^3.3.1"
+isort = "^5.10.1"
+yapf = "^0.32.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.yapf]
+based_on_style = "google"
+align_closing_bracket_with_visual_indent = true
+blank_line_before_nested_class_or_def = false
+column_limit = 100
+indent_dictionary_value = true
+join_multiple_lines = true
+split_all_comma_separated_values = false
+split_all_top_level_comma_separated_values = true
+split_before_expression_after_opening_paren = true
+split_before_arithmetic_operator = true
+
+[tool.isort]
+profile = "google"
+src_paths = ["lib", "proto2"]
+line_length = 100

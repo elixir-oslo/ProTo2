@@ -1,0 +1,12 @@
+name: proto2
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.7.*
+  - mamba
+  - pip
+  - poetry=1.*
+  - numpy
+  - rpy2
