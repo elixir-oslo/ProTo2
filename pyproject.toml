@@ -19,6 +19,7 @@ fastapi = {extras = ["trio"], version = "^0.79.0"}
 Flask = "^2.1.3"
 Flask-Mako = "^0.4"
 gunicorn = "^20.1.0"
+Werkzeug = "2.0.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
