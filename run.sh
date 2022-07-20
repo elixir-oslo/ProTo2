@@ -6,7 +6,7 @@ cd "$HERE"
 
 export PYTHONPATH=$PYTHONPATH:$HERE/lib
 
-export FLASK_APP=proto2:flask_app
+export FLASK_APP=proto2.flask_app
 #export FLASK_ENV=development
 
 #export SCRIPT_NAME=$(python proto2/get_proxy_path.py)
