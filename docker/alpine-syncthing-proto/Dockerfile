@@ -34,5 +34,8 @@ RUN apk update && \
     apk add --no-cache sudo && \
     rm -rf /var/cache/apk/*
 
+# Temporarily
+RUN git pull
+
 # CMD ["./run.sh"]
 # CMD ["/bin/entrypoint.sh", "/bin/syncthing", "-home", "/var/syncthing/config& ./run.sh
