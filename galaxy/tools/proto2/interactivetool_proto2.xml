@@ -34,6 +34,10 @@
     </environment_variables>
     <command detect_errors="exit_code"><![CDATA[
         #if $as_root:
+            #if $ssh_key:
+                mkdir /root/.ssh &&
+                echo $ssh_key >> /root/.ssh/authorized_keys &&
+            #end if
             dropbear -REm -p 2222 &&
         #else:
             addgroup -g \$PGID alpine &&
@@ -47,7 +51,6 @@
                 chmod -R g-rwx,o-rwx /home/alpine &&
                 dropbear -REmwg -p 2222 &&
                 echo "alpine  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/rootusers &&
-                export FLASK_DEBUG=1 &&
             #end if
         #end if
 
@@ -59,14 +62,22 @@
             /bin/syncthing -home /var/syncthing/config &
             cd /opt/proto2 &&
             git pull &&
-            env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
+            #if $ssh_key:
+                env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/dev.sh
+            #else
+                env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
+            #end if
         #else
             chown \$PUID:\$PGID /var/syncthing &&
             exec su-exec \$PUID:\$PGID env HOME=/var/syncthing /bin/syncthing -home /var/syncthing/config &
             cd /opt/proto2 &&
             git pull &&
             chown -R \$PUID:\$PGID /opt/proto2 &&
-            exec su-exec \$PUID:\$PGID env FLASK_DEBUG=\$FLASK_DEBUG GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
+            #if $ssh_key:
+                exec su-exec \$PUID:\$PGID env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/dev.sh
+            #else
+                exec su-exec \$PUID:\$PGID env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
+            #end if
         #end if
     ]]>
     </command>
