@@ -17,6 +17,9 @@ WORKDIR $BASE
 RUN conda create --name proto2 --file conda-linux-64.lock && \
     conda clean -afy
 
+# Temporarily
+RUN git pull
+
 RUN conda run -n proto2 poetry install --no-root
 
 RUN mkdir /etc/dropbear && \
