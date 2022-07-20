@@ -1,16 +1,22 @@
 import codecs
-import json, os, requests
-import sys
 from collections import namedtuple
+import json
+import os
+import sys
 
-from Crypto.Cipher import Blowfish
-from werkzeug.datastructures import MultiDict
-from flask import url_for, current_app
-from compat import patch_dict
 from bioblend.galaxy import GalaxyInstance
+from Crypto.Cipher import Blowfish
+from flask import current_app
+from flask import url_for
+import requests
+from werkzeug.datastructures import MultiDict
+
+from compat import patch_dict
+
 
 def get_proto2_url(gi, galaxy_history_id, galaxy_output):
-    jobs = gi.jobs.get_jobs(state='running', tool_id='interactive_tool_proto2', history_id=galaxy_history_id)
+    jobs = gi.jobs.get_jobs(
+        state='running', tool_id='interactive_tool_proto2', history_id=galaxy_history_id)
     #print(jobs)
     for job in jobs:
         job_id = job['id']
@@ -46,9 +52,11 @@ class GalaxyHistory:
         hid = history['id']
         if hid not in self._cache or self._cache[hid]['update_time'] != history['update_time']:
             self._cache[hid] = history
-            hds = gi.histories.show_history(hid, contents=True, deleted=False, visible=True, details='all')
+            hds = gi.histories.show_history(
+                hid, contents=True, deleted=False, visible=True, details='all')
             #hds = gi.datasets.get_datasets(history_id=self.history['id'], deleted=False, visible=True) # no details
-            self._cache[hid]['active_datasets'] = [GalaxyHistoryDataset(ds) for ds in hds]
+            if 'active_datasets' in self._cache[hid]:
+                self._cache[hid]['active_datasets'] = [GalaxyHistoryDataset(ds) for ds in hds]
         self.active_datasets = self._cache[hid]['active_datasets']
 
 
@@ -121,11 +129,13 @@ class Transaction(GalaxyConnection):
             self.request.POST = patch_dict(request.form)
 
     def css(self, fname):
-        html = '<link rel="stylesheet" type="text/css" href="./%s/style/%s.css">' % (self.app.static_url_path, fname)
+        html = '<link rel="stylesheet" type="text/css" href="./%s/style/%s.css">' % (
+            self.app.static_url_path, fname)
         return html
 
     def js(self, fname):
-        html = '<script type="text/javascript" src="./%s/%s.js"></script>' % (self.app.static_url_path, fname)
+        html = '<script type="text/javascript" src="./%s/%s.js"></script>' % (
+            self.app.static_url_path, fname)
         return html
 
     def url_for(self, ref):
