@@ -1,6 +1,6 @@
 <tool id="proto2_run_tool" name="Run ProTo tool" version="0.0.1">
     <requirements>
-        <container type="docker">proto2-test:latest</container>
+        <container type="docker">localhost/alpine-syncthing-proto:latest</container>
     </requirements>
 	<configfiles>
 		<inputs name="inputs" filename="inputs.json" />
@@ -18,7 +18,7 @@
     	export GALAXY_OUTPUT='$output' &&
     	export GALAXY_OUTPUT_ID='$output.id' &&
     	mkdir files && 
-	conda run -n proto2 /opt/proto/run-tool.sh 'inputs.json'
+	conda run -n proto2 /opt/proto2/run-tool.sh 'inputs.json'
     ]]>
     </command>
     <inputs>
