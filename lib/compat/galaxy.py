@@ -154,6 +154,6 @@ class SecurityHelper:
         # Pad to a multiple of 8 with leading "!"
         if isinstance(session_key, str):
             session_key = session_key.encode()
-        s = (b"!" * (8 - len(session_key) % 8)) + session_key
+        s = (b'!' * (8 - len(session_key) % 8)) + session_key
         # Encrypt
         return codecs.encode(self.id_cipher.encrypt(s), 'hex')
