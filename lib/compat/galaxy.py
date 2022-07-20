@@ -50,14 +50,18 @@ class GalaxyHistory:
     def __init__(self, gi):
         history = gi.histories.get_most_recently_used_history()
         hid = history['id']
-        if hid not in self._cache or self._cache[hid]['update_time'] != history['update_time']:
+        if hid not in self._cache or self._cache[hid].get('update_time') != history.get(
+                'update_time'):
             self._cache[hid] = history
             hds = gi.histories.show_history(
                 hid, contents=True, deleted=False, visible=True, details='all')
             # hds = gi.datasets.get_datasets(history_id=self.history['id'], deleted=False, visible=True) # no details
-            if 'active_datasets' in self._cache[hid]:
-                self._cache[hid]['active_datasets'] = [GalaxyHistoryDataset(ds) for ds in hds]
-        self.active_datasets = self._cache[hid]['active_datasets']
+            self._cache[hid]['active_datasets'] = [GalaxyHistoryDataset(ds) for ds in hds]
+
+        if 'active_datasets' in self._cache[hid]:
+            self.active_datasets = self._cache[hid]['active_datasets']
+        else:
+            self.active_datasets = []
 
 
 class GalaxyConnection:
