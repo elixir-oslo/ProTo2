@@ -33,7 +33,7 @@ ProtoClassInfo = namedtuple('ProtoClassInfo', ['class_name', 'super_class_list']
 
 # Public functions
 def initInstalledProtoTools():
-    os.makedirs(PROTO_TOOL_SHELVE_FN)
+    os.makedirs(os.path.dirname(PROTO_TOOL_SHELVE_FN), exist_ok=True)
     tool_register = shelve.open(PROTO_TOOL_SHELVE_FN, 'n')
     tool_register['Test1Tool'] = ('proto.tools.mojo.Test1Tool', 'Test1Tool', None)
     tool_register['proto_proto_gui_test_tool1'] = ('proto.tools.guitest.ProtoGuiTestTool1',
