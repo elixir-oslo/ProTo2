@@ -1,14 +1,18 @@
+from collections import namedtuple
+from collections import OrderedDict
+from importlib import import_module
 import os
 import re
 import shelve
 import sys
 import traceback
-from collections import namedtuple, OrderedDict
-from importlib import import_module
 
-from proto.config.Config import SOURCE_CODE_BASE_DIR, PROTO_TOOL_DIR, PROTO_TOOL_SHELVE_FN, \
-    CONFIG_DIR
-from proto.tools.GeneralGuiTool import GeneralGuiTool, MultiGeneralGuiTool
+from proto.config.Config import CONFIG_DIR
+from proto.config.Config import PROTO_TOOL_DIR
+from proto.config.Config import PROTO_TOOL_SHELVE_FN
+from proto.config.Config import SOURCE_CODE_BASE_DIR
+from proto.tools.GeneralGuiTool import GeneralGuiTool
+from proto.tools.GeneralGuiTool import MultiGeneralGuiTool
 
 MULTI_GENERAL_GUI_TOOL = 'MultiGeneralGuiTool'
 
@@ -23,23 +27,39 @@ HIDDEN_MODULES_CONFIG_FN = \
 HIDDEN_NONTOOL_MODULES_CONFIG_FN = \
     os.path.join(CONFIG_DIR, 'proto_tool_explorer_hidden_nontool_modules.txt')
 
-
 ProtoToolInfo = namedtuple('ProtoToolInfo', ['prototype_cls', 'module_name'])
 ProtoClassInfo = namedtuple('ProtoClassInfo', ['class_name', 'super_class_list'])
 
 
 # Public functions
 def initInstalledProtoTools():
+    os.makedirs(PROTO_TOOL_SHELVE_FN)
     tool_register = shelve.open(PROTO_TOOL_SHELVE_FN, 'n')
     tool_register['Test1Tool'] = ('proto.tools.mojo.Test1Tool', 'Test1Tool', None)
-    tool_register['proto_proto_gui_test_tool1'] = ('proto.tools.guitest.ProtoGuiTestTool1', 'ProtoGuiTestTool1', None)
-    tool_register['proto_proto_gui_test_tool2'] = ('proto.tools.guitest.ProtoGuiTestTool2', 'ProtoGuiTestTool2', None)
-    tool_register['proto_proto_gui_test_tool3'] = ('proto.tools.guitest.ProtoGuiTestTool3', 'ProtoGuiTestTool3', None)
-    tool_register['proto_proto_gui_test_tool4'] = ('proto.tools.guitest.ProtoGuiTestTool4', 'ProtoGuiTestTool4', None)
-    tool_register['proto_proto_gui_test_tool5'] = ('proto.tools.guitest.ProtoGuiTestTool5', 'ProtoGuiTestTool5', None)
-    tool_register['proto_proto_gui_test_tool6'] = ('proto.tools.guitest.ProtoGuiTestTool6', 'ProtoGuiTestTool6', None)
-    tool_register['proto_proto_gui_test_tool7'] = ('proto.tools.guitest.ProtoGuiTestTool7', 'ProtoGuiTestTool7', None)
-    tool_register['proto_debug_tool_import_tool'] = ('proto.tools.DebugToolImportTool', 'DebugToolImportTool', None)
+    tool_register['proto_proto_gui_test_tool1'] = ('proto.tools.guitest.ProtoGuiTestTool1',
+                                                   'ProtoGuiTestTool1',
+                                                   None)
+    tool_register['proto_proto_gui_test_tool2'] = ('proto.tools.guitest.ProtoGuiTestTool2',
+                                                   'ProtoGuiTestTool2',
+                                                   None)
+    tool_register['proto_proto_gui_test_tool3'] = ('proto.tools.guitest.ProtoGuiTestTool3',
+                                                   'ProtoGuiTestTool3',
+                                                   None)
+    tool_register['proto_proto_gui_test_tool4'] = ('proto.tools.guitest.ProtoGuiTestTool4',
+                                                   'ProtoGuiTestTool4',
+                                                   None)
+    tool_register['proto_proto_gui_test_tool5'] = ('proto.tools.guitest.ProtoGuiTestTool5',
+                                                   'ProtoGuiTestTool5',
+                                                   None)
+    tool_register['proto_proto_gui_test_tool6'] = ('proto.tools.guitest.ProtoGuiTestTool6',
+                                                   'ProtoGuiTestTool6',
+                                                   None)
+    tool_register['proto_proto_gui_test_tool7'] = ('proto.tools.guitest.ProtoGuiTestTool7',
+                                                   'ProtoGuiTestTool7',
+                                                   None)
+    tool_register['proto_debug_tool_import_tool'] = ('proto.tools.DebugToolImportTool',
+                                                     'DebugToolImportTool',
+                                                     None)
     tool_list = dict(tool_register)
     tool_register.close()
     return tool_list
@@ -47,9 +67,11 @@ def initInstalledProtoTools():
 
 def getInstalledProtoTools():
     tool_shelve = shelve.open(PROTO_TOOL_SHELVE_FN, 'r')
-    installed_class_info = [tool_shelve.get(t) for t in tool_shelve.keys() if os.path.exists(
-        os.path.join(SOURCE_CODE_BASE_DIR, tool_shelve.get(t)[0].replace('.', os.path.sep)) +
-        '.py')]
+    installed_class_info = [
+        tool_shelve.get(t) for t in tool_shelve.keys() if os.path.exists(
+            os.path.join(SOURCE_CODE_BASE_DIR, tool_shelve.get(t)[0].replace('.', os.path.sep))
+            + '.py')
+    ]
     tool_shelve.close()
     return installed_class_info
 
@@ -113,6 +135,7 @@ def isProtoToolId(tool_id):
 
 # Private functions
 
+
 def _commonGetProtoToolList(tool_dir=PROTO_TOOL_DIR, except_modules_set=set(), debug_imports=False):
     tmpSysPath = _fixSameNameImportIssues()
 
@@ -130,9 +153,11 @@ def _commonGetProtoToolList(tool_dir=PROTO_TOOL_DIR, except_modules_set=set(), d
 
 def _findInstalledClassesSet():
     installed_class_info = DEFAULT_INSTALLED_CLASS_INFO + getInstalledProtoTools()
-    installed_classes_set = set([getUniqueKeyForClass(module, class_name) for
-                                 module, class_name, conda_activate_source
-                                 in installed_class_info])
+    installed_classes_set = set([
+        getUniqueKeyForClass(module, class_name) for module,
+        class_name,
+        conda_activate_source in installed_class_info
+    ])
     return installed_classes_set
 
 
@@ -154,8 +179,11 @@ def _filterInstalledSubClassTools(tmp_tool_info_dict, all_installed_sub_classes)
     return tool_info_dict
 
 
-def _findAllUninstalledTools(pys, tool_dir, except_modules_set,
-                             installed_classes_set, debug_imports=False):
+def _findAllUninstalledTools(pys,
+                             tool_dir,
+                             except_modules_set,
+                             installed_classes_set,
+                             debug_imports=False):
     all_modules = _findAllModulesWithClasses(except_modules_set, pys)
 
     installed_classes_set.update(_findInstalledSubClasses(all_modules, installed_classes_set))
@@ -197,8 +225,10 @@ def _findInstalledSubClasses(all_modules, except_classes_set):
     return all_installed_sub_classes_set
 
 
-def _getInfoForAllUninstalledTools(all_modules, tool_dir,
-                                   installed_classes_set, debug_imports=False):
+def _getInfoForAllUninstalledTools(all_modules,
+                                   tool_dir,
+                                   installed_classes_set,
+                                   debug_imports=False):
     tool_info_dict = OrderedDict()
 
     for module_name, class_info_list in all_modules:
@@ -236,14 +266,12 @@ def _storeAsNonToolHiddenModule(module_name):
     rel_module_name = getRelativeModulePath(module_name)
     if rel_module_name not in \
             retrieveHiddenModulesSet(HIDDEN_NONTOOL_MODULES_CONFIG_FN):
-        storeHiddenModules(HIDDEN_NONTOOL_MODULES_CONFIG_FN,
-                           [rel_module_name],
-                           append=True)
+        storeHiddenModules(HIDDEN_NONTOOL_MODULES_CONFIG_FN, [rel_module_name], append=True)
 
 
 def _getModuleNameFromPath(fn):
-    return os.path.splitext(os.path.relpath(
-        os.path.abspath(fn), SOURCE_CODE_BASE_DIR))[0].replace(os.path.sep, '.')
+    return os.path.splitext(os.path.relpath(os.path.abspath(fn),
+                                            SOURCE_CODE_BASE_DIR))[0].replace(os.path.sep, '.')
 
 
 def _findInfoForAllClasses(fn):
@@ -290,8 +318,11 @@ def _findAllPythonFiles(tool_dir):
     pys = []
     for d in os.walk(tool_dir, followlinks=True):
         if d[0].find('.svn') == -1:
-            pys += [os.path.join(d[0], f) for f in d[2] if f.endswith('.py') and
-                    not any(f.startswith(x) for x in ['.', '#', '_'])]
+            pys += [
+                os.path.join(d[0], f)
+                for f in d[2]
+                if f.endswith('.py') and not any(f.startswith(x) for x in ['.', '#', '_'])
+            ]
     return pys
 
 
