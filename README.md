@@ -7,7 +7,7 @@ Environment setup is fetched from https://stackoverflow.com/questions/70851048/d
 
 ## Creating the environment
 ```
-conda create --name proto2 --file conda-linux-64.lock
+conda create --name proto2 --file conda-linux-64.lock  # or other OS type as needed
 conda activate proto2
 poetry install --no-root
 ```

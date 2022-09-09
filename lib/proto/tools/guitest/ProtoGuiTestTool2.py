@@ -3,21 +3,15 @@ from collections import OrderedDict
 from proto.HtmlCore import HtmlCore
 from proto.tools.GeneralGuiTool import GeneralGuiTool
 
-
-ALL_GUI_ELEMENTS = [
-    ('Password field', 'passwordField'),
-    ('Raw HTML (hidden until password is entered)', 'rawHtmlWaitForPassword'),
-    ('History selection box (tabular files only)', 'historySelectionTabular'),
-    ('History contents (10 first lines)', 'historyContents'),
-    ('Show extra fields', 'checkBox'),
-    ('Selection box', 'selectionBox'),
-    ('Text area (readandwrite)', 'textAreaReadWrite'),
-    ('Text area (readonly)', 'textAreaReadonly'),
-    ('Table', 'table'),
-    ('Check box list (only unique values)', 'checkBoxList'),
-    ('Hidden element', 'hidden'),
-    ('Output type?', 'outputType')
-]
+ALL_GUI_ELEMENTS = [('Password field', 'passwordField'),
+                    ('Raw HTML (hidden until password is entered)', 'rawHtmlWaitForPassword'),
+                    ('History selection box (tabular files only)', 'historySelectionTabular'),
+                    ('History contents (10 first lines)', 'historyContents'),
+                    ('Show extra fields', 'checkBox'), ('Selection box', 'selectionBox'),
+                    ('Text area (readandwrite)', 'textAreaReadWrite'), ('Text area (readonly)',
+                                                                        'textAreaReadonly'),
+                    ('Table', 'table'), ('Check box list (only unique values)', 'checkBoxList'),
+                    ('Hidden element', 'hidden'), ('Output type?', 'outputType')]
 
 # Order is different than
 GUI_ELEMENTS_ORDER = [
@@ -39,7 +33,7 @@ A = 'A'
 B = 'B'
 C = '\xc5'
 DEFAULT_TEXT = 'Default text'
-READ_ONLY_TEXT = "Read only text"
+READ_ONLY_TEXT = 'Read only text'
 CHECK_BOX_LIST = OrderedDict([('Something', True), ('Something else', False)])
 OUTPUT_TO_VALIDATION = 'Output to validation box'
 OUTPUT_TO_HISTORY = 'Output to new history element'
@@ -54,7 +48,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
 
         Mandatory method for all ProTo tools.
         """
-        return "Dynamic GUI dependencies: Test tool #2 for Galaxy ProTo GUI"
+        return 'Dynamic GUI dependencies: Test tool #2 for Galaxy ProTo GUI'
 
     @classmethod
     def getInputBoxNames(cls):
@@ -114,9 +108,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
         """
         if choices.checkBox:
             from proto.tools.GeneralGuiTool import BoxGroup
-            return [BoxGroup(label='Extra fields',
-                             first='selectionBox',
-                             last='textAreaReadonly')]
+            return [BoxGroup(label='Extra fields', first='selectionBox', last='textAreaReadonly')]
 
     @classmethod
     def getOptionsBoxPasswordField(cls):  # Alt: getOptionsBox1()
@@ -235,19 +227,16 @@ class ProtoGuiTestTool2(GeneralGuiTool):
 
     @classmethod
     def getOptionsBoxHistoryContents(cls, prevChoices):
-        try:
-            if prevChoices.historySelectionTabular:
-                from proto.CommonFunctions import extractFnFromDatasetInfo
-                fileName = extractFnFromDatasetInfo(prevChoices.historySelectionTabular)
-                with open(fileName) as inputFile:
-                    output = ''
-                    for i in range(10):
-                        output += inputFile.readline()
-                return output, 10, True
-            else:
-                return '', 10, True
-        except Exception as e:
-            return str(e)
+        if prevChoices.historySelectionTabular:
+            from proto.CommonFunctions import extractFnFromDatasetInfo
+            fileName = extractFnFromDatasetInfo(prevChoices.historySelectionTabular)
+            with open(fileName) as inputFile:
+                output = ''
+                for i in range(10):
+                    output += inputFile.readline()
+            return output, 10, True
+        else:
+            return '', 10, True
 
     @classmethod
     def getOptionsBoxCheckBox(cls, prevChoices):
@@ -268,10 +257,9 @@ class ProtoGuiTestTool2(GeneralGuiTool):
 
     @classmethod
     def getOptionsBoxTable(cls, prevChoices):
-        return [['Key', 'Value'],
-                ['selectionBox', prevChoices.selectionBox],
-                ['textAreaReadWrite', prevChoices.textAreaReadWrite],
-                ['passwordField', prevChoices.passwordField]]
+        return [['Key', 'Value'], ['selectionBox', prevChoices.selectionBox],
+                ['textAreaReadWrite',
+                 prevChoices.textAreaReadWrite], ['passwordField', prevChoices.passwordField]]
 
     @classmethod
     def getOptionsBoxCheckBoxList(cls, prevChoices):
@@ -447,6 +435,7 @@ class ProtoGuiTestTool2(GeneralGuiTool):
         Optional method. Default return value if method is not defined: True
         """
         return ['selectionBox']
+
     #
     # @classmethod
     # def getToolDescription(cls):

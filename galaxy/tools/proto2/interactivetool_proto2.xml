@@ -6,20 +6,20 @@
         <entry_point name="ProTo2 Interactive Tool" requires_domain="False">
             <port>5000</port>
         </entry_point>
-        <entry_point name="ProTo2 Interactive Tool SSH" requires_domain="True">
-            <port>2222:2222</port>
+        <entry_point name="ProTo2 Interactive Tool SSH" requires_domain="False">
+            <port same_port_in_host="True">2222</port>
             <protocol>tcp</protocol>
         </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="True">
-            <port>22000:22000</port>
+        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="False">
+            <port same_port_in_host="True">22000</port>
             <protocol>tcp</protocol>
         </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (UDP)" requires_domain="True">
-            <port>22000:22000</port>
+        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (UDP)" requires_domain="False">
+            <port same_port_in_host="True">22000</port>
             <protocol>udp</protocol>
         </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Announce (UDP)" requires_domain="True">
-            <port>21027:21027</port>
+        <entry_point name="ProTo2 Interactive Tool Syncthing Announce (UDP)" requires_domain="False">
+            <port same_port_in_host="True">21027</port>
             <protocol>udp</protocol>
         </entry_point>
     </entry_points>
