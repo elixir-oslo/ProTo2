@@ -60,6 +60,12 @@ def initInstalledProtoTools():
     tool_register['proto_debug_tool_import_tool'] = ('proto.tools.DebugToolImportTool',
                                                      'DebugToolImportTool',
                                                      None)
+    tool_register['proto_proto_tool_template'] = ('proto.tools.ToolTemplate',
+                                                     'ToolTemplate',
+                                                     None)
+    tool_register['proto_proto_tool_template_minimal'] = ('proto.tools.ToolTemplateMinimal',
+                                                     'ToolTemplateMinimal',
+                                                     None)
     tool_list = dict(tool_register)
     tool_register.close()
     return tool_list
