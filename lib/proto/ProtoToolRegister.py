@@ -64,7 +64,7 @@ def initInstalledProtoTools():
                                                      'ToolTemplate',
                                                      None)
     tool_register['proto_proto_tool_template_minimal'] = ('proto.tools.ToolTemplateMinimal',
-                                                     'ToolTemplateMinimal',
+                                                     'ToolTemplate',
                                                      None)
     tool_list = dict(tool_register)
     tool_register.close()
