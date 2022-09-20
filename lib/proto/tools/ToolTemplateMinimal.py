@@ -41,7 +41,7 @@ class ToolTemplate(GeneralGuiTool):
 
     @classmethod
     def execute(cls, choices, galaxyFn=None, username=''):
-        print 'Executing...'
+        print('Executing...')
 
     @classmethod
     def validateAndReturnErrors(cls, choices):

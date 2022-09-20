@@ -357,7 +357,7 @@ class ToolTemplate(GeneralGuiTool):
         *Mandatory method*:
             Yes, unless :py:meth:`isRedirectTool()` returns True.
         """
-        print 'Executing...'
+        print('Executing...')
 
     @classmethod
     def validateAndReturnErrors(cls, choices):
