@@ -7,10 +7,10 @@
             <port>5000</port>
         </entry_point>
         <entry_point name="ProTo2 Interactive Tool SSH" requires_domain="True">
-            <port>2222:2222</port>
+            <port>2222</port>
             <protocol>tcp</protocol>
         </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="True">
+        <!--<entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="True">
             <port>22000:22000</port>
             <protocol>tcp</protocol>
         </entry_point>
@@ -21,7 +21,7 @@
         <entry_point name="ProTo2 Interactive Tool Syncthing Announce (UDP)" requires_domain="True">
             <port>21027:21027</port>
             <protocol>udp</protocol>
-        </entry_point>
+        </entry_point> -->
     </entry_points>
     <environment_variables>
         <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
@@ -82,7 +82,7 @@
     ]]>
     </command>
     <inputs>
-        <param name="input" type="data" optional="true" label="Job parameters"/>
+        <param name="input" type="data" optional="true" label="Job parameters 123"/>
         <param name="as_root" type="boolean" checked="false" label="Run as root (careful now...)"/>
         <param name="ssh_key" type="text" area="true" optional="true" label="Public ssh key for direct connect"/>
 
