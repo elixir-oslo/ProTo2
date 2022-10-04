@@ -78,7 +78,7 @@ class TrackFindClientTool(GeneralGuiTool):
 
         Mandatory method for all ProTo tools.
         """
-        return "TrackFind client"
+        return "Create a GSuite of remote tracks with FAIRtracks metadata"
 
 
     @classmethod
