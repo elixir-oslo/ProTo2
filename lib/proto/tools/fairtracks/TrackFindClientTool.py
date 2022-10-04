@@ -139,7 +139,11 @@ class TrackFindClientTool(GeneralGuiTool):
 
     @classmethod
     def getOptionsBoxFairtracks(cls):
-        return '__rawstr__', str(HtmlCore().image('static/images/fairtracks.png'))
+        core = HtmlCore()
+        core.image('static/images/fairtracks.png',
+                   style="display: block; margin: 20px 0 20px auto")
+        core.divider()
+        return '__rawstr__', str(core)
 
     @classmethod
     def getOptionsBoxSelectRepository(cls, prevChoices):
