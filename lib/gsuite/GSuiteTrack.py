@@ -64,11 +64,10 @@ class GSuiteTrackFactory(type):
         return type.__call__(cls, uri, **kwArgs)
 
 
-class GSuiteTrack:
+class GSuiteTrack(metaclass=GSuiteTrackFactory):
     '''
     Abstract superclass for all protocol-specific subclasses of GSuite tracks
     '''
-    __metaclass__ = GSuiteTrackFactory
 
     SCHEME = None
 
