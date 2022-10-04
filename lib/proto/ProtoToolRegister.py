@@ -192,7 +192,7 @@ def _fixSameNameImportIssues():
 
 def _filterInstalledSubClassTools(tmp_tool_info_dict, all_installed_sub_classes):
     tool_info_dict = OrderedDict()
-    for tool_selection_name, tool_info in tmp_tool_info_dict.iteritems():
+    for tool_selection_name, tool_info in tmp_tool_info_dict.items():
         prototype_cls = tool_info.prototype_cls
         if prototype_cls not in all_installed_sub_classes:
             tool_info_dict[tool_selection_name] = tool_info

@@ -24,7 +24,7 @@ class GSuiteRequirements:
         return getattr(gSuiteOrTrack, HEADER_VAR_DICT[header].memberName)
 
     def check(self, gSuiteOrTrack):
-        for header, allowedVals in self._requirements.iteritems():
+        for header, allowedVals in self._requirements.items():
             if self._getMemberValue(gSuiteOrTrack, header) not in allowedVals:
                 errorString = '\'%s\' is not a supported GSuite %s for this tool. Supported file types are [%s]' % \
                     (self._getMemberValue(gSuiteOrTrack, header), header, ', '.join(self._requirements[header]))

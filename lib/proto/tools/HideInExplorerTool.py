@@ -39,7 +39,7 @@ class HideInExplorerTool(GeneralGuiTool):
         module_to_module_path_dict = cls._getModuleToModulePathDict()
         hidden_tools_set = retrieveHiddenModulesSet(HIDDEN_MODULES_CONFIG_FN)
         return OrderedDict([(module_name, module_path not in hidden_tools_set)
-                            for module_name, module_path in module_to_module_path_dict.iteritems()])
+                            for module_name, module_path in module_to_module_path_dict.items()])
     #
     # @classmethod
     # def getOptionsBoxSecondKey(cls, prevChoices):
@@ -62,7 +62,7 @@ class HideInExplorerTool(GeneralGuiTool):
         module_to_module_path_dict = cls._getModuleToModulePathDict()
         storeHiddenModules(HIDDEN_MODULES_CONFIG_FN,
                            [module_to_module_path_dict[module_name]
-                            for module_name, selected in choices.tools.iteritems()
+                            for module_name, selected in choices.tools.items()
                             if not selected])
 
     @classmethod

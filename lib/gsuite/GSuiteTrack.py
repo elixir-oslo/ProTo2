@@ -38,7 +38,7 @@ def unquoteParseResults(parseResults):
 def unquoteQueryDict(queryDict):
     resQueryDict = {}
 
-    for key,val in queryDict.iteritems():
+    for key,val in queryDict.items():
         resQueryDict[parse.unquote_plus(key)] = [parse.unquote_plus(_) for _ in val]
 
     return resQueryDict
@@ -225,7 +225,7 @@ class GSuiteTrack:
     def attributes(self, attributes):
         self._attributes = OrderedDict()
         
-        for key,val in attributes.iteritems():
+        for key,val in attributes.items():
             if val is not None:
                 if val == '':
                     raise InvalidFormatError('Empty attribute contents not allowed. '

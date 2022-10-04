@@ -301,7 +301,7 @@ class TrackFindClientTool(GeneralGuiTool):
         dataTypes = OrderedDict(sorted(dataTypes.items()))
 
         dataTypesOutput = OrderedDict()
-        for dataType, count in dataTypes.iteritems():
+        for dataType, count in dataTypes.items():
             dataTypesOutput[dataType + ' [' + str(count) + ' files found]'] = True
 
         return dataTypesOutput

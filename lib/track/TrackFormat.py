@@ -227,7 +227,7 @@ class TrackFormat:
         return [False, True]
 
     def getFormatName(self):
-        for formatName, format in TrackFormat.FORMAT_DICT.iteritems():
+        for formatName, format in TrackFormat.FORMAT_DICT.items():
             if (self._dense, (self._val != False), self._interval, self._linked) == format:
                 return formatName.capitalize()
                 #return formatName.capitalize() + ' (%s)'%self.getValTypeName() if self.isValued() else ''

@@ -12,7 +12,7 @@ from util.CommonFunctions import ensurePathExists
 
 
 def _composeHeaders(gSuite, out):
-    for headerKey, headerSpec in HEADER_VAR_DICT.iteritems():
+    for headerKey, headerSpec in HEADER_VAR_DICT.items():
         if not headerSpec.deprecated:
             headerVal = getattr(gSuite, headerSpec.memberName)
             print('##%s: %s' % (headerKey, headerVal), file=out)

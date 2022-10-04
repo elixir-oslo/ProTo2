@@ -70,7 +70,7 @@ def _updateHeaderVars(headerVars, key, val):
 
 
 def _setCustomHeaders(gSuite, headerVars):
-    for key, val in headerVars.iteritems():
+    for key, val in headerVars.items():
         if key not in HEADER_VAR_DICT:
             gSuite.setCustomHeader(key, val)
 
@@ -214,7 +214,7 @@ def _parseTrackLine(trackLine, colNames, headerVars):
                 kwArgs[colSpec.memberName] = headerVars[colSpec.headerName]
 
     attributes = OrderedDict(zip(remainingColNames, colVals))
-    for key, val in attributes.iteritems():
+    for key, val in attributes.items():
         if val == '.':
             del attributes[key]
     kwArgs['attributes'] = attributes

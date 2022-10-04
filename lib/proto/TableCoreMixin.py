@@ -27,7 +27,7 @@ class TableCoreMixin:
                          tableId=tableId,
                          tableClass=tableClass, **kwargs)
 
-        for key, val in dataDictOfLists.iteritems():
+        for key, val in dataDictOfLists.items():
             if isinstance(val, list):
                 self.tableLine([key] + val, **kwargs)
             else:

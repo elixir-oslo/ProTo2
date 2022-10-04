@@ -130,7 +130,7 @@ class TrackFindModule:
     def createQuery(self, attrValueMap):
         queryList = []
 
-        for attribute, value in attrValueMap.iteritems():
+        for attribute, value in attrValueMap.items():
             if value is None:
                 continue
             queryPart = attribute
