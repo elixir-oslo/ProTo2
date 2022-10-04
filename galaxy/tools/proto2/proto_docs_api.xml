@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<tool tool_type="proto" name="ProTo API docs:" id="proto_api_doc">
+<tool tool_type="data_source" name="ProTo API docs:" id="proto_docs_api">
 
 	<description>Main index</description>
 
