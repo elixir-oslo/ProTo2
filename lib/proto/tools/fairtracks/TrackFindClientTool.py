@@ -84,6 +84,7 @@ class TrackFindClientTool(GeneralGuiTool):
     @classmethod
     def getInputBoxNames(cls):
         attrBoxes = []
+        attrBoxes.append(('', 'fairtracks'))
         attrBoxes.append(('Select repository: ', 'selectRepository'))
         attrBoxes.append(('', 'categories'))
 
@@ -137,7 +138,11 @@ class TrackFindClientTool(GeneralGuiTool):
         return '__rawstr__', str(HtmlCore().divider())
 
     @classmethod
-    def getOptionsBoxSelectRepository(cls):
+    def getOptionsBoxFairtracks(cls):
+        return '__rawstr__', str(HtmlCore().image('static/images/fairtracks.png'))
+
+    @classmethod
+    def getOptionsBoxSelectRepository(cls, prevChoices):
         tfm = TrackFindModule()
         repos = tfm.getRepositories()
         reposAndHubs = []
