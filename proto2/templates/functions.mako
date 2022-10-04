@@ -25,7 +25,6 @@ import proto.gui as gui
     </label>
     ${staticInfoBox(name, info)}
     </p>
-    ${value}
 </%def>
 
 <%def name="history_select(control, name, opts, value, label = None, info = None)">

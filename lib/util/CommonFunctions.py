@@ -94,12 +94,13 @@ def formatPhraseWithCorrectChrUsage(phrase, useUrlEncoding=True, notAllowedChars
 
 
 def urlDecodePhrase(phrase, unquotePlus=False):
-    return phrase
 
     if unquotePlus:
         decoded = parse.unquote_plus(phrase)
     else:
         decoded = parse.unquote(phrase)
+
+    return decoded
 
     try:
         try:
