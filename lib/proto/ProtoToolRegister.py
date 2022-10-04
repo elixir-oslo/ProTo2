@@ -36,36 +36,46 @@ def initInstalledProtoTools():
     os.makedirs(os.path.dirname(PROTO_TOOL_SHELVE_FN), exist_ok=True)
     tool_register = shelve.open(PROTO_TOOL_SHELVE_FN, 'n')
     tool_register['Test1Tool'] = ('proto.tools.mojo.Test1Tool', 'Test1Tool', None)
-    tool_register['proto_proto_gui_test_tool1'] = ('proto.tools.guitest.ProtoGuiTestTool1',
-                                                   'ProtoGuiTestTool1',
-                                                   None)
-    tool_register['proto_proto_gui_test_tool2'] = ('proto.tools.guitest.ProtoGuiTestTool2',
-                                                   'ProtoGuiTestTool2',
-                                                   None)
-    tool_register['proto_proto_gui_test_tool3'] = ('proto.tools.guitest.ProtoGuiTestTool3',
-                                                   'ProtoGuiTestTool3',
-                                                   None)
-    tool_register['proto_proto_gui_test_tool4'] = ('proto.tools.guitest.ProtoGuiTestTool4',
-                                                   'ProtoGuiTestTool4',
-                                                   None)
-    tool_register['proto_proto_gui_test_tool5'] = ('proto.tools.guitest.ProtoGuiTestTool5',
-                                                   'ProtoGuiTestTool5',
-                                                   None)
-    tool_register['proto_proto_gui_test_tool6'] = ('proto.tools.guitest.ProtoGuiTestTool6',
-                                                   'ProtoGuiTestTool6',
-                                                   None)
-    tool_register['proto_proto_gui_test_tool7'] = ('proto.tools.guitest.ProtoGuiTestTool7',
-                                                   'ProtoGuiTestTool7',
-                                                   None)
-    tool_register['proto_debug_tool_import_tool'] = ('proto.tools.DebugToolImportTool',
-                                                     'DebugToolImportTool',
-                                                     None)
-    tool_register['proto_proto_tool_template'] = ('proto.tools.ToolTemplate',
-                                                     'ToolTemplate',
-                                                     None)
-    tool_register['proto_proto_tool_template_minimal'] = ('proto.tools.ToolTemplateMinimal',
-                                                     'ToolTemplate',
-                                                     None)
+    tool_register['proto_gui_test_tool1'] = (
+        'proto.tools.guitest.ProtoGuiTestTool1',
+        'ProtoGuiTestTool1',
+        None)
+    tool_register['proto_gui_test_tool2'] = (
+        'proto.tools.guitest.ProtoGuiTestTool2',
+        'ProtoGuiTestTool2',
+        None)
+    tool_register['proto_gui_test_tool3'] = (
+        'proto.tools.guitest.ProtoGuiTestTool3',
+        'ProtoGuiTestTool3',
+        None)
+    tool_register['proto_gui_test_tool4'] = (
+        'proto.tools.guitest.ProtoGuiTestTool4',
+        'ProtoGuiTestTool4',
+        None)
+    tool_register['proto_gui_test_tool5'] = (
+        'proto.tools.guitest.ProtoGuiTestTool5',
+        'ProtoGuiTestTool5',
+        None)
+    tool_register['proto_gui_test_tool6'] = (
+        'proto.tools.guitest.ProtoGuiTestTool6',
+        'ProtoGuiTestTool6',
+        None)
+    tool_register['proto_gui_test_tool7'] = (
+        'proto.tools.guitest.ProtoGuiTestTool7',
+        'ProtoGuiTestTool7',
+        None)
+    tool_register['proto_debug_tool_import_tool'] = (
+        'proto.tools.DebugToolImportTool',
+        'DebugToolImportTool',
+        None)
+    tool_register['proto_tool_template'] = (
+        'proto.tools.ToolTemplate',
+        'ToolTemplate',
+        None)
+    tool_register['proto_tool_template_minimal'] = (
+        'proto.tools.ToolTemplateMinimal',
+        'ToolTemplateMinimal',
+        None)
     tool_list = dict(tool_register)
     tool_register.close()
     return tool_list

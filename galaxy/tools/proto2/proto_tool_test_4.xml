@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
-<!--
 
--->
-<tool name="ProTo GUI test tool 4" id="proto_proto_gui_test_tool4" tool_type="interactive_client_tool" version="0.0.1">
-    <description>test</description>
+<tool name="ProTo GUI test tool 4:" id="proto_gui_test_tool4" tool_type="interactive_client_tool" version="0.0.1">
+    <description>Multitool</description>
     <requirements>
         <container type="docker">localhost/alpine-syncthing-proto:latest</container>
     </requirements>
@@ -30,7 +28,7 @@
     <inputs action="interactive_tool_proto2:ProTo2 Interactive Tool"> 
         <param name="interactive_tool_id" type="hidden" value="interactive_tool_proto2" />
         <param name="interactive_tool_entry_name" type="hidden" value="ProTo2 Interactive Tool" />
-        <param name="proto_tool_id" type="hidden" value="proto_proto_gui_test_tool4" />
+        <param name="proto_tool_id" type="hidden" value="proto_gui_test_tool4" />
 	<param name="param_dict" type="text" area="true" label="Tool params" value="">
         	<sanitizer sanitize="false" />
         </param>

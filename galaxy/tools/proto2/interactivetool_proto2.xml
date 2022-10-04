@@ -1,4 +1,5 @@
-<tool id="interactive_tool_proto2" tool_type="interactive" name="Interactive ProTo service" version="0.0.1">
+<tool id="interactive_tool_proto2" tool_type="interactive" name="ProTo service:" version="0.0.1">
+    <description>Interactive tool</description>
     <requirements>
         <container type="docker">localhost/alpine-syncthing-proto:latest</container>
     </requirements>

@@ -10,7 +10,7 @@ class ProtoGuiTestTool5(GeneralGuiTool):
 
         Mandatory method for all ProTo tools.
         """
-        return "Redirect tool (square matrix): Test tool #5 for Galaxy ProTo GUI"
+        return "Private redirect tool (square matrix): Test tool #5 for Galaxy ProTo GUI"
 
     @classmethod
     def getInputBoxNames(cls):
@@ -312,7 +312,7 @@ class ProtoGuiTestTool5(GeneralGuiTool):
         Mandatory method if isRedirectTool() returns True.
         """
         from proto.CommonFunctions import createToolURL
-        return createToolURL('proto_proto_gui_test_tool6',
+        return createToolURL('proto_gui_test_tool6',
                              numRows=choices.numRowCols,
                              numCols=choices.numRowCols)
 
