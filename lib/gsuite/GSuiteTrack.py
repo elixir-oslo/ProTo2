@@ -51,7 +51,7 @@ class GSuiteTrackFactory(type):
             # This is probably not needed, as the scheme should not be quoted
             #if doUnquote:
                 #uri = parse.unquote(uri)
-            scheme = parse.parse(uri).scheme
+            scheme = parse.urlparse(uri).scheme
 
             if scheme == '':
                 raise InvalidFormatError('GSuite track URI does not have a specified ' \
@@ -76,7 +76,7 @@ class GSuiteTrack:
                  attributes=OrderedDict(), comment=None, doUnquote=True):
         self._doUnquote = doUnquote
 
-        self._parsedUri = parse.parse(uri)
+        self._parsedUri = parse.urlparse(uri)
         if self._parsedUri.query:
             self._queryDict = parse.parse_qs(self._parsedUri.query, keep_blank_values=False, strict_parsing=True)
 
