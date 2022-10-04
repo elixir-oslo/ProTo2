@@ -76,6 +76,10 @@ def initInstalledProtoTools():
         'proto.tools.ToolTemplateMinimal',
         'ToolTemplateMinimal',
         None)
+    tool_register['hb_track_find_client_tool'] = (
+        'proto.tools.fairtracks.TrackFindClientTool',
+        'TrackFindClientTool',
+        None)
     tool_list = dict(tool_register)
     tool_register.close()
     return tool_list
