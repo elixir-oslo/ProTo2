@@ -20,7 +20,11 @@
         export GALAXY_WORKING_DIR=`pwd` &&
         export GALAXY_OUTPUT='$output' &&
         export GALAXY_OUTPUT_ID='$output.id' &&
-        mkdir files && 
+        mkdir files &&
+        pushd . &&
+        cd /opt/proto2 &&
+        git pull &&
+        popd &&
         conda run -n proto2 /opt/proto2/run-tool.sh 'inputs.json'
     ]]>
     </command>
