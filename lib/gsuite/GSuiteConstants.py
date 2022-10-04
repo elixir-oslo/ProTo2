@@ -1,7 +1,9 @@
 from collections import namedtuple, OrderedDict
 
+from util.CommonConstants import ALLOWED_CHARS
 
 ALLOW_GSUITE_FILE_PROTOCOL = False
+ALLOWED_CHARS = ALLOWED_CHARS
 
 # Track type constants
 
@@ -31,9 +33,6 @@ ColSpec = namedtuple('ColSpec', ['colName', 'memberName', 'headerName', 'depreca
 #
 # Constants
 #
-
-ALLOWED_CHARS = set([chr(x) for x in range(128)
-                     if x not in set(list(range(9)) + [11, 12] + list(range(14, 32)) + [127])])
 
 LOCATION_HEADER = 'location'
 FILE_FORMAT_HEADER = 'file format'

@@ -4,11 +4,10 @@ from io import StringIO
 from gsuite.GSuite import GSuite
 from gsuite.GSuiteTrack import GSuiteTrack
 from gsuite.GSuiteConstants import HEADER_VAR_DICT, FILE_TYPE_HEADER, \
-                                        TEXT, BINARY, PRIMARY, PREPROCESSED, \
-                                        ALL_STD_COL_SPECS, OPTIONAL_STD_COL_NAMES, \
-                                        ALL_STD_COL_NAMES, URI_COL, \
-                                        GENOME_HEADER, MULTIPLE
-from util.CommonConstants import ALLOWED_CHARS
+    TEXT, BINARY, PRIMARY, PREPROCESSED, \
+    ALL_STD_COL_SPECS, OPTIONAL_STD_COL_NAMES, \
+    ALL_STD_COL_NAMES, URI_COL, \
+    GENOME_HEADER, MULTIPLE, ALLOWED_CHARS
 from util.CustomExceptions import InvalidFormatError
 
 
