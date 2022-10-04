@@ -9,7 +9,7 @@ ThreadInfo = namedtuple('ThreadInfo', ('thread', 'condition'))
 
 
 def getRandomTracks(gSuite, number, seed=9001):
-    from gold.util.RandomUtil import random
+    from util.RandomUtil import random
     randomTrackList = []
     trackList = [t for t in gSuite.allTracks()]
     trackIndexList = [i for i in range(len(trackList))]
