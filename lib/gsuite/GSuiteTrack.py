@@ -1,8 +1,7 @@
 import os
-import urlparse
 
 from collections import OrderedDict
-from urllib import quote, quote_plus, unquote, unquote_plus 
+from urllib import parse
 from gsuite.GSuiteConstants import HEADER_VAR_DICT, LOCATION_HEADER, FILE_FORMAT_HEADER, \
                                         TRACK_TYPE_HEADER, GENOME_HEADER, LOCAL, REMOTE, TEXT, BINARY, \
                                         MULTIPLE, UNKNOWN, PREPROCESSED, PRIMARY, BTRACK_SUFFIX, \
@@ -16,31 +15,31 @@ _GSUITE_TRACK_REGISTRY = {}
 
 def quoteParseResults(parseResults):
     scheme = parseResults.scheme
-    netloc = quote(parseResults.netloc, safe='')
-    path = quote(parseResults.path, safe='/')
-    params = quote(parseResults.params, safe='')
-    query = quote_plus(parseResults.query, safe='=&')
-    fragment = quote(parseResults.fragment, safe='')
+    netloc = parse.quote(parseResults.netloc, safe='')
+    path = parse.quote(parseResults.path, safe='/')
+    params = parse.quote(parseResults.params, safe='')
+    query = parse.quote_plus(parseResults.query, safe='=&')
+    fragment = parse.quote(parseResults.fragment, safe='')
 
-    return urlparse.ParseResult(scheme, netloc, path, params, query, fragment)
+    return parse.ParseResult(scheme, netloc, path, params, query, fragment)
 
 
 def unquoteParseResults(parseResults):
     scheme = parseResults.scheme
-    netloc = unquote(parseResults.netloc)
-    path = unquote(parseResults.path)
-    params = unquote(parseResults.params)
-    query = unquote_plus(parseResults.query)
-    fragment = unquote(parseResults.fragment)
+    netloc = parse.unquote(parseResults.netloc)
+    path = parse.unquote(parseResults.path)
+    params = parse.unquote(parseResults.params)
+    query = parse.unquote_plus(parseResults.query)
+    fragment = parse.unquote(parseResults.fragment)
 
-    return urlparse.ParseResult(scheme, netloc, path, params, query, fragment)
+    return parse.ParseResult(scheme, netloc, path, params, query, fragment)
 
 
 def unquoteQueryDict(queryDict):
     resQueryDict = {}
 
     for key,val in queryDict.iteritems():
-        resQueryDict[unquote_plus(key)] = [unquote_plus(_) for _ in val]
+        resQueryDict[parse.unquote_plus(key)] = [parse.unquote_plus(_) for _ in val]
 
     return resQueryDict
 
@@ -51,8 +50,8 @@ class GSuiteTrackFactory(type):
         if cls is GSuiteTrack:
             # This is probably not needed, as the scheme should not be quoted
             #if doUnquote:
-                #uri = unquote(uri)
-            scheme = urlparse.urlparse(uri).scheme
+                #uri = parse.unquote(uri)
+            scheme = parse.parse(uri).scheme
 
             if scheme == '':
                 raise InvalidFormatError('GSuite track URI does not have a specified ' \
@@ -77,9 +76,9 @@ class GSuiteTrack:
                  attributes=OrderedDict(), comment=None, doUnquote=True):
         self._doUnquote = doUnquote
 
-        self._parsedUri = urlparse.urlparse(uri)
+        self._parsedUri = parse.parse(uri)
         if self._parsedUri.query:
-            self._queryDict = urlparse.parse_qs(self._parsedUri.query, keep_blank_values=False, strict_parsing=True)
+            self._queryDict = parse.parse_qs(self._parsedUri.query, keep_blank_values=False, strict_parsing=True)
 
         if doUnquote:
             self._parsedUri = unquoteParseResults(self._parsedUri)
@@ -111,13 +110,12 @@ class GSuiteTrack:
 
     @property
     def uriWithoutSuffix(self):
-        from urlparse import ParseResult
-        uriCopy = ParseResult(scheme=self._parsedUri.scheme,
-                              netloc=self._parsedUri.netloc,
-                              path=self._parsedUri.path,
-                              params='',
-                              query=self._parsedUri.query,
-                              fragment='')
+        uriCopy = parse.ParseResult(scheme=self._parsedUri.scheme,
+                                    netloc=self._parsedUri.netloc,
+                                    path=self._parsedUri.path,
+                                    params='',
+                                    query=self._parsedUri.query,
+                                    fragment='')
         uriCopy = quoteParseResults(uriCopy) if self._doUnquote else uriCopy
         return uriCopy.geturl()
 
@@ -235,7 +233,7 @@ class GSuiteTrack:
                                              'indicate missing values')
 
                 if self._doUnquote:
-                    val = unquote(val)
+                    val = parse.unquote(val)
                 self._attributes[key] = val
 
     def setAttribute(self, attrName, attrVal):
@@ -280,12 +278,12 @@ class RemoteGSuiteTrack(GSuiteTrack):
             if trackName:
                 query = 'track=' + ':'.join(trackName)
 
-        parseResult = urlparse.ParseResult(cls.SCHEME, netloc, path, suffix, query, '')
+        parseResult = parse.ParseResult(cls.SCHEME, netloc, path, suffix, query, '')
 
         if doQuote:
             parseResult = quoteParseResults(parseResult)
 
-        return urlparse.urlunparse(parseResult)
+        return parse.urlunparse(parseResult)
 
 
 class LocalGSuiteTrack(GSuiteTrack):
@@ -421,12 +419,12 @@ class HbGSuiteTrack(LocalGSuiteTrack, PreprocessedGSuiteTrack, NoQueryForTextGSu
     @classmethod
     def generateURI(cls, trackName=[], doQuote=True):
         path = '/' + '/'.join(trackName)
-        parseResult = urlparse.ParseResult(cls.SCHEME, '', path, '', '', '')
+        parseResult = parse.ParseResult(cls.SCHEME, '', path, '', '', '')
 
         if doQuote:
             parseResult = quoteParseResults(parseResult)
 
-        return urlparse.urlunparse(parseResult)
+        return parse.urlunparse(parseResult)
 
 
 class FileGSuiteTrack(LocalGSuiteTrack, SuffixDependentGSuiteTrack, NoQueryForTextGSuiteTrack):
@@ -436,25 +434,25 @@ class FileGSuiteTrack(LocalGSuiteTrack, SuffixDependentGSuiteTrack, NoQueryForTe
     @classmethod
     def generateURI(cls, path='', suffix='', trackName=[], doQuote=True):
         query = 'track=' + ':'.join(trackName) if trackName else ''
-        parseResult = urlparse.ParseResult(cls.SCHEME, '', path, suffix, query, '')
+        parseResult = parse.ParseResult(cls.SCHEME, '', path, suffix, query, '')
 
         if doQuote:
             parseResult = quoteParseResults(parseResult)
 
-        return urlparse.urlunparse(parseResult)
+        return parse.urlunparse(parseResult)
 
 
 def registerGSuiteTrackClass(cls):
-    if cls.SCHEME not in urlparse.uses_query:
-        urlparse.uses_query.append(cls.SCHEME)
+    if cls.SCHEME not in parse.uses_query:
+        parse.uses_query.append(cls.SCHEME)
 
-    if cls.SCHEME not in urlparse.uses_params:
-        urlparse.uses_params.append(cls.SCHEME)
+    if cls.SCHEME not in parse.uses_params:
+        parse.uses_params.append(cls.SCHEME)
 
     _GSUITE_TRACK_REGISTRY[cls.SCHEME] = cls
 
 def fixNetlocParsingForFile():
-    urlparse.uses_netloc.remove(FileGSuiteTrack.SCHEME)
+    parse.uses_netloc.remove(FileGSuiteTrack.SCHEME)
 
 for cls in [FtpGSuiteTrack,
             HttpGSuiteTrack,
