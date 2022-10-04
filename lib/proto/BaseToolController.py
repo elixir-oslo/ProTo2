@@ -6,7 +6,7 @@ from proto.gui import load_input_parameters, SelectElement, \
 from proto.config import Config
 from compat import patch_dict
 
-class BaseToolController(object):
+class BaseToolController:
     def __init__(self, trans = None, job = None):
         if trans:
             self.openTransaction(trans)

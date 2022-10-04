@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 
-class TableCoreMixin(object):
+class TableCoreMixin:
     def tableFromDictionary(self, dataDict, columnNames=None, sortable=True,
                             tableId=None, expandable=False, visibleRows=6,
                             presorted=None, **kwargs):

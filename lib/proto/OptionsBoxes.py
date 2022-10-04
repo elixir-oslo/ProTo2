@@ -1,4 +1,4 @@
-class BaseOptionsBox(object):
+class BaseOptionsBox:
 
     @classmethod    
     def isTypeOf(cls, opts):
@@ -40,4 +40,3 @@ class TextOptionsBox(BaseOptionsBox):
         if isinstance(opts, tuple):
             return cls(*opts)
         return cls(opts)
-

@@ -6,7 +6,7 @@ import os
 
 from compat.galaxy import GalaxyConnection
 
-class StaticFile(object):
+class StaticFile:
     STATIC_DIR = STATIC_DIR
     STATIC_PATH = STATIC_PATH
     STATIC_REL_PATH = STATIC_REL_PATH

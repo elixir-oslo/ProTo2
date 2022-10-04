@@ -3,7 +3,7 @@ from collections import namedtuple
 from urllib.parse import quote
 
 
-class HistElement(object):
+class HistElement:
     def __init__(self, name, format, label=None, hidden=False):
         self.name = name
         self.format = format
@@ -14,7 +14,7 @@ class HistElement(object):
 BoxGroup = namedtuple('BoxGroup', ['label', 'first', 'last'])
 
 
-class GeneralGuiTool(object):
+class GeneralGuiTool:
     def __init__(self, toolId=None, conda_activate_source=None):
         self.__class__.toolId = toolId
         # In order to activate a tool-specific Conda environment (defined by Conda requirements

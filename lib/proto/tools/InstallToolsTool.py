@@ -246,7 +246,7 @@ class InstallToolsTool(GeneralGuiTool):
         return 'customhtml'
 
 
-class GalaxyToolConfig(object):
+class GalaxyToolConfig:
     tool_xml_template = '''<tool id="%s" name="%s" version="1.0.0"
   tool_type="%s_generic" proto_tool_module="%s" proto_tool_class="%s">
   <description>%s</description>

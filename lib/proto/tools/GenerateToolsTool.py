@@ -1,5 +1,5 @@
 import os
-from urllib import quote
+from urllib import parse
 
 from proto.HtmlCore import HtmlCore
 from proto.config.Config import URL_PREFIX, PROTO_TOOL_DIR, SOURCE_CODE_BASE_DIR
@@ -100,7 +100,7 @@ class GenerateToolsTool(GeneralGuiTool):
     @classmethod
     def _setupExtraBoxMethods(cls):
         from functools import partial
-        for i in xrange(cls.MAX_DIR_LEVELS):
+        for i in range(cls.MAX_DIR_LEVELS):
             setattr(cls, 'getOptionsBoxDirLevel%s' % i,
                     partial(cls._getOptionsBoxDirLevel, index=i))
             setattr(cls, 'getOptionsBoxNewDir%s' % i,
@@ -155,7 +155,7 @@ class GenerateToolsTool(GeneralGuiTool):
         for i in range(len(selectedDirs)):
             init_py = os.path.sep.join([cls.TOOL_DIR] + selectedDirs[0:i+1]) + '/__init__.py'
             if not os.path.exists(init_py):
-                print 'creating ', init_py
+                print('creating ', init_py)
                 open(init_py, 'a').close()
 
         if choices.template == 'Yes':
@@ -178,11 +178,11 @@ class GenerateToolsTool(GeneralGuiTool):
             len(SOURCE_CODE_BASE_DIR.split(os.path.sep))
         exploreSubClassId = '.'.join(cls._getProtoRelToolDirs()[numExcludedDirs:] +
                                      selectedDirs + [choices.moduleName])
-        explore_id = quote(exploreSubClassId + ': ' + choices.toolName)
-        print 'Tool generated: <a href="%s/%s/?tool_id=%s&sub_class_id=%s">%s: %s</a>' % \
+        explore_id = parse.quote(exploreSubClassId + ': ' + choices.toolName)
+        print('Tool generated: <a href="%s/%s/?tool_id=%s&sub_class_id=%s">%s: %s</a>' % \
               (URL_PREFIX, cls.WEB_CONTROLLER, cls.EXPLORE_TOOL_ID,
-               explore_id, choices.moduleName, choices.toolName)
-        print 'Tool source path:', pyName
+               explore_id, choices.moduleName, choices.toolName))
+        print('Tool source path:', pyName)
 
     @classmethod
     def validateAndReturnErrors(cls, choices):
