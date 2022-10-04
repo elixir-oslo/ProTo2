@@ -180,8 +180,9 @@ class TrackFindClientTool(GeneralGuiTool):
                     if True not in vals.values():
                         return
             attributes = copy(prevChoices.categories)
+            if isinstance(attributes, str):
+                attributes = literal_eval(attributes)
             # add shortcuts to most used attributes
-            raise Exception(repr(attributes))
             for shortcut in cls.ATTRIBUTE_SHORTCUTS:
                 attributes.insert(0, shortcut)
         else:
