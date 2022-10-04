@@ -25,6 +25,7 @@ import proto.gui as gui
     </label>
     ${staticInfoBox(name, info)}
     </p>
+    ${value}
 </%def>
 
 <%def name="history_select(control, name, opts, value, label = None, info = None)">
@@ -114,4 +115,3 @@ import proto.gui as gui
 <%def name="accessDenied()">
     <div class="warningmessage">This functionality is only available to specific users. <br>Contact us if you need access.</div>
 </%def>
-
