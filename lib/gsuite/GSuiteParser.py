@@ -14,7 +14,7 @@ from util.CustomExceptions import InvalidFormatError
 #
 # Namedtuples
 #
-from quick.util.CommonFunctions import urlDecodePhrase, \
+from util.CommonFunctions import urlDecodePhrase, \
     formatPhraseWithCorrectChrUsage
 
 GSuiteContents = namedtuple('GSuiteContents', ['genome', 'colNames', 'headerVars', 'tracks'])

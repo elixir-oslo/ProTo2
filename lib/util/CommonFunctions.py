@@ -1,8 +1,9 @@
 import os
 import re
-import urllib
+from urllib import parse
 from collections import OrderedDict
 
+from util.CommonConstants import ALLOWED_CHARS
 
 """
 Note on datasetInfo and datasetId (used in several functions):
@@ -74,3 +75,35 @@ def getFileSuffix(fn):
 def stripFileSuffix(fn):
     suffix = getFileSuffix(fn)
     return fn[:-len(suffix)-1]
+
+
+def formatPhraseWithCorrectChrUsage(phrase, useUrlEncoding=True, notAllowedChars=''):
+    corrected = ''
+    for char in phrase:
+        if char not in ALLOWED_CHARS or char in notAllowedChars:
+            if useUrlEncoding:
+                if isinstance(phrase, bytes):
+                    char = char.encode('utf-8')
+                for byte in char:
+                    if not isinstance(byte, int):
+                        byte = ord(byte)
+                    corrected += '%' + '{:0>2X}'.format(byte)
+        else:
+            corrected += char
+    return corrected
+
+
+def urlDecodePhrase(phrase, unquotePlus=False):
+    if unquotePlus:
+        decoded = parse.unquote_plus(phrase)
+    else:
+        decoded = parse.unquote(phrase)
+
+    try:
+        try:
+            decoded.decode('ascii')
+            return decoded
+        except (UnicodeDecodeError, UnicodeEncodeError):
+            return decoded.decode('utf-8')
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        return decoded
