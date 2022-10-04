@@ -277,7 +277,7 @@ class TrackFindClientTool(GeneralGuiTool):
     @classmethod
     def getOptionsBoxGsuiteHash(cls, prevChoices):
         gsuite = prevChoices.gsuite
-        if gsuite:
+        if gsuite and not isinstance(gsuite, str):
             gsuiteHash = hash(tuple(sorted(hash(track.uri) for track in gsuite.allTracks())))
         else:
             gsuiteHash = ''
@@ -554,7 +554,7 @@ class TrackFindClientTool(GeneralGuiTool):
 
     @classmethod
     def getGSuite(cls, prevChoices, includeExtraAttributes=False):
-        if not includeExtraAttributes:
+        if not includeExtraAttributes and not isinstance(prevChoices.gsuite, str):
             gsuite = prevChoices.gsuite
 
         else:
