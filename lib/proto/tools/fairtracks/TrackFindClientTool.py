@@ -141,7 +141,7 @@ class TrackFindClientTool(GeneralGuiTool):
     def getOptionsBoxFairtracks(cls):
         core = HtmlCore()
         core.image('static/images/fairtracks.png',
-                   style="display: block; margin: 20px 0 20px auto")
+                   style="display: block; margin: 20px auto 20px 20px")
         core.divider()
         return '__rawstr__', str(core)
 
