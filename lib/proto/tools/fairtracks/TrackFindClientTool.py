@@ -181,6 +181,7 @@ class TrackFindClientTool(GeneralGuiTool):
                         return
             attributes = copy(prevChoices.categories)
             # add shortcuts to most used attributes
+            raise Exception(repr(attributes))
             for shortcut in cls.ATTRIBUTE_SHORTCUTS:
                 attributes.insert(0, shortcut)
         else:
