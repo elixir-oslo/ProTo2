@@ -33,15 +33,15 @@ def get_proto2_url(gi, galaxy_history_id, galaxy_output):
 
 class GalaxyHistoryDataset:
     def __init__(self, dataset):
-        self.name = dataset['name']
-        self.hid = dataset['hid']
-        self.visible = dataset['visible']
-        self.state = dataset['state']
-        self.extension = dataset['file_ext']
-        self.dataset_id = dataset['dataset_id']
-        self.datatype = dataset['data_type']
-        self.dbkey = dataset['genome_build']
-        self.url = dataset['download_url']
+        self.name = dataset.get('name')
+        self.hid = dataset.get('hid')
+        self.visible = dataset.get('visible')
+        self.state = dataset.get('state')
+        self.extension = dataset.get('file_ext')
+        self.dataset_id = dataset.get('dataset_id')
+        self.datatype = dataset.get('data_type')
+        self.dbkey = dataset.get('genome_build')
+        self.url = dataset.get('download_url')
 
 
 class GalaxyHistory:
