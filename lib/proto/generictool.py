@@ -71,13 +71,14 @@ class GenericToolController(BaseToolController):
                 self.subClasses[toolSelectionName] = subcls
 
         self.resetAll = False
-        if self.subClassId and self.subClassId in self.subClasses:
-            self.prototype = self.subClasses[self.subClassId]()
-            if 'sub_class_id' not in self.oldValues or self.oldValues['sub_class_id'] != self.subClassId:
-                self.oldValues['sub_class_id'] = self.subClassId
-                # do not reset boxes/ignore params if we are called with parameters in the url (e.g redirect or demo link)
-                if not self.use_default:
-                    self.resetAll = True
+        if self.subClassId:
+            if self.subClassId in self.subClasses:
+                self.prototype = self.subClasses[self.subClassId]()
+                if 'sub_class_id' not in self.oldValues or self.oldValues['sub_class_id'] != self.subClassId:
+                    self.oldValues['sub_class_id'] = self.subClassId
+                    # do not reset boxes/ignore params if we are called with parameters in the url (e.g redirect or demo link)
+                    if not self.use_default:
+                        self.resetAll = True
 
         self.inputTypes = []
         self.inputValues = []
