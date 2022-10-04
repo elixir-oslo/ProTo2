@@ -9,7 +9,7 @@ import logging
 log = logging.getLogger( __name__ )
 
 
-class TrackFindModule(object):
+class TrackFindModule:
     URL = 'http://trackfind.elixir.no/api/v1'
 
     STANDARD_CATEGORIES = 'experiments,studies,samples,tracks'
@@ -146,9 +146,10 @@ class TrackFindModule(object):
         return query
 
     def logRequest(self, url, time = 0):
-        logfile = open("apilog-new", "a", 0)
+        logfile = open("apilog-new", "a")
 
         logfile.write(str(time) + '   ' + url + '\n')
+        logfile.flush()
 
         logfile.close()
         pass
