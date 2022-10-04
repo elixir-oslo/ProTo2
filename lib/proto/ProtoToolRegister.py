@@ -76,7 +76,7 @@ def initInstalledProtoTools():
         'proto.tools.ToolTemplateMinimal',
         'ToolTemplateMinimal',
         None)
-    tool_register['hb_track_find_client_tool'] = (
+    tool_register['proto_track_find_client_tool'] = (
         'proto.tools.fairtracks.TrackFindClientTool',
         'TrackFindClientTool',
         None)

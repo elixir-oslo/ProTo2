@@ -28,7 +28,7 @@
     <inputs action="interactive_tool_proto2:ProTo2 Interactive Tool"> 
         <param name="interactive_tool_id" type="hidden" value="interactive_tool_proto2" />
         <param name="interactive_tool_entry_name" type="hidden" value="ProTo2 Interactive Tool" />
-        <param name="proto_tool_id" type="hidden" value="proto_gui_test_tool1" />
+        <param name="proto_tool_id" type="hidden" value="proto_track_find_client_tool" />
 	<param name="param_dict" type="text" area="true" label="Tool params" value="">
         	<sanitizer sanitize="false" />
         </param>
