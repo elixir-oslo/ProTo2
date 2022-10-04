@@ -33,7 +33,7 @@ ColSpec = namedtuple('ColSpec', ['colName', 'memberName', 'headerName', 'depreca
 #
 
 ALLOWED_CHARS = set([chr(x) for x in range(128)
-                     if x not in set(range(9) + [11, 12] + range(14, 32) + [127])])
+                     if x not in set(list(range(9)) + [11, 12] + list(range(14, 32)) + [127])])
 
 LOCATION_HEADER = 'location'
 FILE_FORMAT_HEADER = 'file format'
