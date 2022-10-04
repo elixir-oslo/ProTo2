@@ -214,9 +214,15 @@ def _parseTrackLine(trackLine, colNames, headerVars):
                 kwArgs[colSpec.memberName] = headerVars[colSpec.headerName]
 
     attributes = OrderedDict(zip(remainingColNames, colVals))
+    keys_to_delete = []
+
     for key, val in attributes.items():
         if val == '.':
-            del attributes[key]
+            keys_to_delete.append(key)
+
+    for key in keys_to_delete:
+        del attributes[key]
+
     kwArgs['attributes'] = attributes
 
     try:
