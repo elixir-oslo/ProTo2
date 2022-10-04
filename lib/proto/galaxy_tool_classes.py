@@ -1,5 +1,6 @@
-import os, urllib, shelve, logging, json
+import os, shelve, logging, json
 from xml.etree import ElementTree
+from urllib import parse
 
 from galaxy.tools import Tool, DataSourceTool
 from galaxy.tools.deps import build_dependency_manager, CondaDependencyResolver, ToolRequirements
@@ -75,7 +76,7 @@ class ProtoTool(DataSourceTool):
             job_name = param_dict.get('job_name')
             if job_name:
                 if data.name == self.name:
-                    data.name = urllib.unquote(job_name)
+                    data.name = parse.unquote(job_name)
             out_data2[name] = data
         
         param_dict['file_path'] = os.path.abspath(os.path.join(app.config.root, app.config.file_path))
@@ -87,7 +88,7 @@ class ProtoTool(DataSourceTool):
         job_info = param_dict.get('job_info')
         if job_info:
             for name, data in out_data.items():
-                data.info = urllib.unquote(job_info)
+                data.info = parse.unquote(job_info)
             self.sa_session.flush()
 
 
@@ -142,7 +143,7 @@ class ProtoGenericTool(ProtoTool):
 
         if incoming.has_key('extra_output'):
             try:
-                extra_output = json.loads(urllib.unquote(incoming['extra_output']))
+                extra_output = json.loads(parse.unquote(incoming['extra_output']))
                 if isinstance(extra_output, list):
                     
                     if len(self.outputs) > 1:
@@ -175,4 +176,3 @@ class ProtoGenericTool(ProtoTool):
 
 proto_tool_types = {'proto': ProtoTool,
                     'proto_generic': ProtoGenericTool}
-

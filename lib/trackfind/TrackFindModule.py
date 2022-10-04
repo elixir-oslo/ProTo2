@@ -1,6 +1,5 @@
 
-import urllib
-
+from urllib import parse
 import requests
 
 from gsuite import GSuiteParser
@@ -106,7 +105,7 @@ class TrackFindModule:
             url += '&attributes=' + attrs
 
         if not includeExtraAttributes:
-            url += '&categories=' + urllib.quote(self.STANDARD_CATEGORIES)
+            url += '&categories=' + parse.quote(self.STANDARD_CATEGORIES)
 
         response = requests.get(url, headers=headers)
 
@@ -135,9 +134,9 @@ class TrackFindModule:
                 continue
             queryPart = attribute
             if type(value) is list:
-                queryPart += urllib.quote('?| array[' + (', '.join("'{0}'".format(v) for v in value)) + ']')
+                queryPart += parse.quote('?| array[' + (', '.join("'{0}'".format(v) for v in value)) + ']')
             else:
-                queryPart += '?' + "'{}'".format(urllib.quote(value))
+                queryPart += '?' + "'{}'".format(parse.quote(value))
 
             queryList.append(queryPart)
 
