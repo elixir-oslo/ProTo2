@@ -44,7 +44,7 @@ def _findAllCols(gSuite):
     return colSpecs, attributes.keys()
 
 def _composeColSpecLine(colSpecs, attributes, out):
-    allCols = [colSpec.colName for colSpec in colSpecs] + attributes
+    allCols = list([colSpec.colName for colSpec in colSpecs]) + attributes
     if len(allCols) > 1:
         print('###' + '\t'.join(allCols), file=out)
 
