@@ -4,7 +4,7 @@ from proto.tools.GeneralGuiTool import GeneralGuiTool
 class ToolTemplateMinimal(GeneralGuiTool):
     @classmethod
     def getToolName(cls):
-        return "Tool not yet in use"
+        return "Some changes"
 
     @classmethod
     def getInputBoxNames(cls):
