@@ -9,13 +9,6 @@
                 <inputs name="inputs" filename="inputs.json" />
         </configfiles>
 
-    <environment_variables>
-        <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
-        <environment_variable name="REMOTE_HOST">$__galaxy_url__</environment_variable>
-        <environment_variable name="GALAXY_WEB_PORT">8080</environment_variable>
-        <environment_variable name="GALAXY_URL">$__galaxy_url__</environment_variable>
-        <environment_variable name="API_KEY" inject="api_key" />
-    </environment_variables>
     <command detect_errors="exit_code"><![CDATA[
         export GALAXY_WORKING_DIR=`pwd` &&
         export GALAXY_OUTPUT='$output' &&
@@ -25,7 +18,7 @@
     ]]>
     </command>
     <!--    <inputs action="/" check_values="false" method="get"> -->
-    <inputs action="interactive_tool_proto2:ProTo2 Interactive Tool"> 
+    <inputs ict_server_tool_id="interactive_tool_proto2" ict_server_tool_version="0.0.1" ict_server_entrypoint_label="proto2_api">
         <param name="interactive_tool_id" type="hidden" value="interactive_tool_proto2" />
         <param name="interactive_tool_entry_name" type="hidden" value="ProTo2 Interactive Tool" />
         <param name="proto_tool_id" type="hidden" value="proto_gui_test_tool2" />

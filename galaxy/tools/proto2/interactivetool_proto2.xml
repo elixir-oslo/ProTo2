@@ -1,26 +1,26 @@
-<tool id="interactive_tool_proto2" tool_type="interactive" name="ProTo service:" version="0.0.1">
+<tool id="interactive_tool_proto2" tool_type="interactive" name="ProTo2 service:" version="0.0.1">
     <description>Interactive tool</description>
     <requirements>
         <container type="docker">localhost/alpine-syncthing-proto:latest</container>
     </requirements>
     <entry_points>
-        <entry_point name="ProTo2 Interactive Tool" requires_domain="False">
+        <entry_point name="ProTo2 Interactive Tool" label="proto2_api" requires_domain="False">
             <port>5000</port>
         </entry_point>
         <entry_point name="ProTo2 Interactive Tool SSH" requires_domain="True">
-            <port>2222:2222</port>
+            <port>2222</port>
             <protocol>tcp</protocol>
         </entry_point>
         <entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="True">
-            <port>22000:22000</port>
+            <port>22000</port>
             <protocol>tcp</protocol>
         </entry_point>
         <entry_point name="ProTo2 Interactive Tool Syncthing Listen (UDP)" requires_domain="True">
-            <port>22000:22000</port>
+            <port>22000</port>
             <protocol>udp</protocol>
         </entry_point>
         <entry_point name="ProTo2 Interactive Tool Syncthing Announce (UDP)" requires_domain="True">
-            <port>21027:21027</port>
+            <port>21027</port>
             <protocol>udp</protocol>
         </entry_point>
     </entry_points>
@@ -32,18 +32,12 @@
         <environment_variable name="PUID">$__app__.config.uid</environment_variable>
         <environment_variable name="PGID">$__app__.config.gid</environment_variable>
         <environment_variable name="API_KEY" inject="api_key" />
+        <!--<environment_variable name="EP_PATH" inject="entry_point_path" entry_point_name="ProTo2 Interactive Tool"/>-->
     </environment_variables>
     <command detect_errors="exit_code"><![CDATA[
-        #if $as_root:
-            #if $ssh_key:
-                mkdir /root/.ssh &&
-                echo $ssh_key >> /root/.ssh/authorized_keys &&
-            #end if
-            dropbear -REm -p 2222 &&
-        #else:
+        #if $as_user:
             addgroup -g \$PGID alpine &&
             adduser -h /home/alpine -s /bin/bash -u \$PUID -G alpine -D alpine &&
-            echo "alpine:\$API_KEY" | chpasswd &&
 
             #if $ssh_key:
                 mkdir /home/alpine/.ssh &&
@@ -53,13 +47,31 @@
                 dropbear -REmwg -p 2222 &&
                 echo "alpine  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/rootusers &&
             #end if
+        #else:
+            #if $ssh_key:
+                mkdir /root/.ssh &&
+                echo $ssh_key >> /root/.ssh/authorized_keys &&
+            #end if
+            dropbear -REm -p 2222 &&
         #end if
 
         #if $input:
               cp '$input' rerun.json &&
         #end if
 
-        #if $as_root:
+        #if $as_user:
+            chown \$PUID:\$PGID /var/syncthing &&
+            exec su-exec \$PUID:\$PGID env HOME=/var/syncthing /bin/syncthing -home /var/syncthing/config &
+            cd /opt/proto2 &&
+            git pull &&
+            echo "\$PUID \$PGID" &&
+            chown -R \$PUID:\$PGID /opt/proto2 &&
+            #if $ssh_key:
+                exec su-exec \$PUID:\$PGID env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/dev.sh
+            #else
+                exec su-exec \$PUID:\$PGID env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
+            #end if
+        #else
             /bin/syncthing -home /var/syncthing/config &
             cd /opt/proto2 &&
             git pull &&
@@ -68,23 +80,12 @@
             #else
                 env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
             #end if
-        #else
-            chown \$PUID:\$PGID /var/syncthing &&
-            exec su-exec \$PUID:\$PGID env HOME=/var/syncthing /bin/syncthing -home /var/syncthing/config &
-            cd /opt/proto2 &&
-            git pull &&
-            chown -R \$PUID:\$PGID /opt/proto2 &&
-            #if $ssh_key:
-                exec su-exec \$PUID:\$PGID env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/dev.sh
-            #else
-                exec su-exec \$PUID:\$PGID env GALAXY_WORKING_DIR=`pwd` LOG='$output' conda run -n proto2 /opt/proto2/run.sh
-            #end if
         #end if
     ]]>
     </command>
     <inputs>
         <param name="input" type="data" optional="true" label="Job parameters"/>
-        <param name="as_root" type="boolean" checked="false" label="Run as root (careful now...)"/>
+        <param name="as_user" type="boolean" checked="false" label="Run as user inside container"/>
         <param name="ssh_key" type="text" area="true" optional="true" label="Public ssh key for direct connect"/>
 
     </inputs>
