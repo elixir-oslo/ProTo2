@@ -1,6 +1,6 @@
 # From: https://github.com/syncthing/syncthing/blob/main/Dockerfile
 
-ARG GOVERSION=latest
+ARG GOVERSION=1.20.7
 
 FROM golang:$GOVERSION AS builder
 
