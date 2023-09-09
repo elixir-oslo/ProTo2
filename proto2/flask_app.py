@@ -84,10 +84,7 @@ def create_app(test_config=None):
             try:
                 #data = gi.tools.run_tool(history_id,'Test1Tool',params)
                 data = gi.tools.run_tool(history_id, param_dict['tool_id'], {
-                    "param_dict": json.dumps(param_dict),
-                    "interactivetool_id": "xxx",
-                    "interactivetool_name": "xxx",
-                    "proto_tool_id": tool_controller.toolId
+                    "param_dict": json.dumps(param_dict)
                 })
             except Exception as e:
                 return str(e)
