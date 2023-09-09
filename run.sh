@@ -17,7 +17,8 @@ echo "ProTo2 starting." > $LOG
 #tail -f flask.log >> $GALAXY_OUTPUT &
 
 #flask run -h 0.0.0.0 -p 5000 > flask.log 2>&1 &
-gunicorn -b 0.0.0.0:5000 -p flask.pid --log-file $LOG --reload "$FLASK_APP:create_app()"
+#gunicorn -b 0.0.0.0:5000 -p flask.pid --log-file $LOG --reload "$FLASK_APP:create_app()"
+gunicorn -b 0.0.0.0:5000 -p flask.pid --log-file $LOG "$FLASK_APP:create_app()"
 
 #echo $! > flask.pid
 #cat flask.pid
