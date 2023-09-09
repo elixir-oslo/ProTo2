@@ -118,7 +118,7 @@ class Transaction(GalaxyConnection):
         # self.galaxy = gi if gi is not None else getGalaxyInstance()
         self.request = request
         if request is not None:
-            params = MultiDict(request.args)
+            params = MultiDict(request.values)
             params.update(request.form)
             if 'proto_tool_id' in params:
                 params['tool_id'] = params['proto_tool_id']
