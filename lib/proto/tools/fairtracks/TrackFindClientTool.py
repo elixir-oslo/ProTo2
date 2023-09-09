@@ -59,14 +59,16 @@ class TrackFindClientTool(GeneralGuiTool):
     YES = 'Yes'
     NO = 'No'
 
-    ATTRIBUTE_SHORTCUTS = OrderedDict([('* Cell/Tissue type', CELL_TISSUE_PATH),
-                          ('* Experiment type', EXPERIMENT_TYPE_PATH),
-                          ('* Genome assembly', GENOME_ASSEMBLY_PATH),
-                          ('* Target', TARGET_PATH),
-                          ('* File format', FILE_FORMAT_PATH),
-                          ('* Type of condensed data', TYPE_OF_DATA_PATH),
-                          ('* Phenotype', PHENOTYPE_PATH),
-                          ('* Geometric track type', GEOMETRIC_TRACK_TYPE_PATH)])
+    ATTRIBUTE_SHORTCUTS = OrderedDict([
+        ('* Sample - type (cell/tissue)', CELL_TISSUE_PATH),
+        ('* Sample - phenotype', PHENOTYPE_PATH),
+        ('* Experiment - technique', EXPERIMENT_TYPE_PATH),
+        ('* Experiment - target', TARGET_PATH),
+        ('* Track - genome assembly', GENOME_ASSEMBLY_PATH),
+        ('* Track - geometric type', GEOMETRIC_TRACK_TYPE_PATH),
+        ('* Track - type of condensed data', TYPE_OF_DATA_PATH),
+        ('* Track - file format', FILE_FORMAT_PATH),
+    ])
 
     TRACK_TABLE_LIMIT = 50
 
@@ -192,7 +194,7 @@ class TrackFindClientTool(GeneralGuiTool):
             if isinstance(attributes, str):
                 attributes = literal_eval(attributes)
             # add shortcuts to most used attributes
-            for shortcut in cls.ATTRIBUTE_SHORTCUTS:
+            for shortcut in reversed(cls.ATTRIBUTE_SHORTCUTS):
                 attributes.insert(0, shortcut)
         else:
             attributes = cls.getSubattributes(prevChoices, level, index)
