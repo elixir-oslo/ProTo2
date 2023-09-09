@@ -11,18 +11,18 @@
             <port>2222</port>
             <protocol>tcp</protocol>
         </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="True">
-            <port>22000</port>
-            <protocol>tcp</protocol>
-        </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (UDP)" requires_domain="True">
-            <port>22000</port>
-            <protocol>udp</protocol>
-        </entry_point>
-        <entry_point name="ProTo2 Interactive Tool Syncthing Announce (UDP)" requires_domain="True">
-            <port>21027</port>
-            <protocol>udp</protocol>
-        </entry_point>
+{#        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (TCP)" requires_domain="True">#}
+{#            <port>22000</port>#}
+{#            <protocol>tcp</protocol>#}
+{#        </entry_point>#}
+{#        <entry_point name="ProTo2 Interactive Tool Syncthing Listen (UDP)" requires_domain="True">#}
+{#            <port>22000</port>#}
+{#            <protocol>udp</protocol>#}
+{#        </entry_point>#}
+{#        <entry_point name="ProTo2 Interactive Tool Syncthing Announce (UDP)" requires_domain="True">#}
+{#            <port>21027</port>#}
+{#            <protocol>udp</protocol>#}
+{#        </entry_point>#}
     </entry_points>
     <environment_variables>
         <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
