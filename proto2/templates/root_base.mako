@@ -6,6 +6,9 @@
     <!--base.mako-->
     ${self.init()}
     <head>
+        %if h.baseHref
+            <base href="${h.baseHref}">
+        %endif
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         ## For mobile browsers, don't scale up
         <meta name = "viewport" content = "maximum-scale=1.0">

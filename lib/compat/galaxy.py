@@ -133,6 +133,8 @@ class Transaction(GalaxyConnection):
             self.request.GET = patch_dict(request.args)
             self.request.POST = patch_dict(request.form)
 
+        self.baseHref = self.request.params.get('entrypoint_target_url') if self.request else None
+
     def css(self, fname):
         html = '<link rel="stylesheet" type="text/css" href="./%s/style/%s.css">' % (
             self.app.static_url_path, fname)
