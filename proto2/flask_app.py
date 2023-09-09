@@ -18,6 +18,7 @@ def create_app(test_config=None):
     galaxy_work = os.getenv('GALAXY_WORKING_DIR', 'instance/files')
     galaxy_history_id = os.getenv('HISTORY_ID', None)
     flask_debug = os.getenv('FLASK_DEBUG', False)
+    ep_path = os.getenv('EP_PATH', None)
 
     gi = GalaxyInstance(url=galaxy_url, key=galaxy_api_key)
 
@@ -25,7 +26,11 @@ def create_app(test_config=None):
     #static_url_path = os.path.join(my_url, 'static')
     #print(static_url_path)
 
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(
+        __name__,
+        instance_relative_config=not ep_path,
+        root_path=ep_path or None,
+    )
 
     mako = MakoTemplates(app)
     #try:
