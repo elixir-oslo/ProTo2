@@ -120,7 +120,8 @@ class Transaction(GalaxyConnection):
         if request is not None:
             params = MultiDict(request.values)
             params.update(request.form)
-            params.update(request.json)
+            if request.json:
+                params.update(request.json)
             if 'interactive_client_tool_id' in params:
                 params['tool_id'] = params['interactive_client_tool_id']
             if 'param_dict' in params:
