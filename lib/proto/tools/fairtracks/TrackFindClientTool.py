@@ -60,8 +60,8 @@ class TrackFindClientTool(GeneralGuiTool):
     NO = 'No'
 
     ATTRIBUTE_SHORTCUTS = OrderedDict([
-        ('* Sample - type (cell/tissue)', CELL_TISSUE_PATH),
         ('* Sample - phenotype', PHENOTYPE_PATH),
+        ('* Sample - type (cell/tissue)', CELL_TISSUE_PATH),
         ('* Experiment - technique', EXPERIMENT_TYPE_PATH),
         ('* Experiment - target', TARGET_PATH),
         ('* Track - genome assembly', GENOME_ASSEMBLY_PATH),
