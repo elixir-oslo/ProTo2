@@ -39,12 +39,12 @@ class GenericToolController(BaseToolController):
         self.errorMessage = None
         self.toolId = self.params.get('tool_id', 'default_tool_id')
 
-        if 'old_values' in self.params:
-            self.oldValues = json.loads(unquote(self.params.get('old_values')))
+        if 'cachedParams' in self.params:
+            # self.oldValues = json.loads(unquote(self.params.get('old_values')))
             self.use_default = False
         else:
             # initial tool state, no manual selections made, not reloaded
-            self.oldValues = {}
+            # self.oldValues = {}
             self.use_default = True
 
 
@@ -70,15 +70,6 @@ class GenericToolController(BaseToolController):
                         toolSelectionName = '.'.join(toolModule) + ': ' + toolSelectionName
                 self.subClasses[toolSelectionName] = subcls
 
-        self.resetAll = False
-        if self.subClassId:
-            if self.subClassId in self.subClasses:
-                self.prototype = self.subClasses[self.subClassId]()
-                if 'sub_class_id' not in self.oldValues or self.oldValues['sub_class_id'] != self.subClassId:
-                    self.oldValues['sub_class_id'] = self.subClassId
-                    # do not reset boxes/ignore params if we are called with parameters in the url (e.g redirect or demo link)
-                    if not self.use_default:
-                        self.resetAll = True
 
         self.inputTypes = []
         self.inputValues = []
@@ -95,6 +86,16 @@ class GenericToolController(BaseToolController):
         self._init()
 
         self._initCache()
+
+        self.resetAll = False
+        if self.subClassId:
+            if self.subClassId in self.subClasses:
+                self.prototype = self.subClasses[self.subClassId]()
+                if 'sub_class_id' not in self.cachedParams or self.cachedParams['sub_class_id'] != self.subClassId:
+                    self.cachedParams['sub_class_id'] = self.subClassId
+                    # do not reset boxes/ignore params if we are called with parameters in the url (e.g redirect or demo link)
+                    if not self.use_default:
+                        self.resetAll = True
         if trans:
             self.action()
 
@@ -446,14 +447,14 @@ class GenericToolController(BaseToolController):
             self.inputValues.append(None if display_only else makeUnicodeIfString(val))
             self.options.append(opts)
 
-            oldval = self.oldValues[id] if id in self.oldValues else None
+            oldVal = self.cachedParams[id] if id in self.cachedParams else None
+
             if i in self.resetBoxes:
-                self.oldValues[id] = val
-                if val != oldval:
+                if val != oldVal:
                     reset = True
 
             if not self.input_changed:
-                if val or self.cachedParams[id]:
+                if val or oldVal:
                     self.input_changed = (makeUnicodeIfString(val) != makeUnicodeIfString(self.cachedParams[id]))
                 # print u'Loaded values from cache. id: {}, val: {}, cached: {}, ' \
                 #       u'input changed: {}'.format(
