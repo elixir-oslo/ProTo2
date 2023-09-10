@@ -32,7 +32,7 @@ def getClassName(obj):
 
 class GenericToolController(BaseToolController):
     STATIC_IMAGE_CLS = StaticImage
-    initChoicesDict = None
+    # initChoicesDict = None
 
     def __init__(self, trans, job):
         BaseToolController.__init__(self, trans, job)
@@ -297,15 +297,16 @@ class GenericToolController(BaseToolController):
         for i in range(len(self.inputNames)):
             name = self.inputNames[i]
             id = self.inputIds[i]
-            if self.initChoicesDict:
-                val = self.initChoicesDict[id]
-            else:
-                val = self.params.get(id)
+            # if self.initChoicesDict:
+            #     val = self.initChoicesDict[id]
+            # else:
+            val = self.params.get(id)
 
             display_only = False
             opts = self.getOptionsBox(id, i, val)
 
-            if reset and not self.initChoicesDict:
+            # if reset and not self.initChoicesDict:
+            if reset:
                 val = None
 
             if opts is None:
@@ -320,12 +321,13 @@ class GenericToolController(BaseToolController):
                     except:
                         opts = self.getDictOfAllGenomes()
                         self.cachedExtra[id] = opts
-                if not self.initChoicesDict:
-                    values = type(opts)()
-                    for k,v in list(opts.items()):
-                        # values[k] = bool(self.params.get(id + '|' + k, False if val else v))
-                        values[str(k)] = bool(self.params.get(id + '|' + k, False) if val else v)
-                    val = values
+
+                # if not self.initChoicesDict:
+                values = type(opts)()
+                for k,v in list(opts.items()):
+                    # values[k] = bool(self.params.get(id + '|' + k, False if val else v))
+                    values[str(k)] = bool(self.params.get(id + '|' + k, False) if val else v)
+                val = values
 
             elif isinstance(opts, str):
                 if opts == '__genome__':
@@ -374,14 +376,14 @@ class GenericToolController(BaseToolController):
                 elif opts[0] == '__multihistory__':
                     self.inputTypes += opts[:1]
                     opts = self.galaxy.itemsFromHistoryFn(opts[1:] if len(opts)>1 else None)
-                    if not self.initChoicesDict:
-                        values = OrderedDict()
-                        for k,v in list(opts.items()):
-                            itemval = self.params.get(id + '|' + k, None)
-                            #if itemval:
-                            values[str(k)] = itemval
+                    # if not self.initChoicesDict:
+                    values = OrderedDict()
+                    for k,v in list(opts.items()):
+                        itemval = self.params.get(id + '|' + k, None)
+                        #if itemval:
+                        values[str(k)] = itemval
 
-                        val = values
+                    val = values
 
                 elif opts[0] == '__track__':
                     self.inputTypes += ['__track__']
