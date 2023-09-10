@@ -64,9 +64,9 @@ else:
 %if control.userHasFullAccess():
     <form method="post" action="${formAction}">
 
-    <INPUT TYPE="HIDDEN" NAME="cached_options" VALUE="${control.encodeCache(control.cachedOptions) |n}">
-    <INPUT TYPE="HIDDEN" NAME="cached_params" VALUE="${control.encodeCache(control.cachedParams) |n}">
-    <INPUT TYPE="HIDDEN" NAME="cached_extra" VALUE="${control.encodeCache(control.cachedExtra) |n} ">
+    <INPUT TYPE="HIDDEN" NAME="cached_options" VALUE="${control.encodeCache(control.cachedOptions)|n}">
+    <INPUT TYPE="HIDDEN" NAME="cached_params" VALUE="${control.encodeCache(control.cachedParams)|n}">
+    <INPUT TYPE="HIDDEN" NAME="cached_extra" VALUE="${control.encodeCache(control.cachedExtra)|n} ">
     <INPUT TYPE="HIDDEN" NAME="old_values" VALUE="${quote(json.dumps(control.oldValues))}">
     <INPUT TYPE="HIDDEN" NAME="datatype" VALUE="${control.prototype.getOutputFormat(control.choices)}">
     <INPUT TYPE="HIDDEN" NAME="job_name" VALUE="${control.prototype.getOutputName(control.choices)}">

@@ -212,18 +212,24 @@ class GenericToolController(BaseToolController):
             self.cachedParams = self.decodeCache(self.params.get('cached_params'))
         except Exception as e:
             # print(f"cached_params error: {e}", file=open('params_debug', 'a'))
+            # import traceback
+            # traceback.print_exc(file=open('params_debug', 'a'))
             self.cachedParams = {}
             
         try:
             self.cachedOptions = self.decodeCache(self.params.get('cached_options'))
         except Exception as e:
             # print(f"cached_options error: {e}", file=open('params_debug', 'a'))
+            # import traceback
+            # traceback.print_exc(file=open('params_debug', 'a'))
             self.cachedOptions = {}
 
         try:
             self.cachedExtra = self.decodeCache(self.params.get('cached_extra'))
         except Exception as e:
             # print(f"cached_extra error: {e}", file=open('params_debug', 'a'))
+            # import traceback
+            # traceback.print_exc(file=open('params_debug', 'a'))
             self.cachedExtra = {}
 
     @staticmethod
@@ -243,21 +249,30 @@ class GenericToolController(BaseToolController):
     def encodeCache(self, data):
         if not data:
             return ''
+        # print(repr(data), file=open('params_debug', 'a'))
         cache = pickle.dumps(data, pickle.HIGHEST_PROTOCOL)
+        # print(repr(cache), file=open('params_debug', 'a'))
         log.debug('encodeCache pickled size: %d', len(cache))
         cache = zlib.compress(cache, 5)
+        # print(repr(cache), file=open('params_debug', 'a'))
         log.debug('encodeCache compressed size: %d', len(cache))
         cache = self._encrypt(cache)
+        # print(repr(cache), file=open('params_debug', 'a'))
         cache = urlsafe_b64encode(cache)
         log.debug('encodeCache final size: %d', len(cache))
+        # print(repr(cache), file=open('params_debug', 'a'))
         return str(cache, 'utf-8')
 
     def decodeCache(self, data):
-        if not data:
+        if not data or not data.strip():
             raise Exception('Nothing to decode')
-        cache = urlsafe_b64decode(bytes(data))
+        # print(repr(data), file=open('params_debug', 'a'))
+        cache = urlsafe_b64decode(data.encode('ascii'))
+        # print(repr(cache), file=open('params_debug', 'a'))
         cache = self._decrypt(cache)
+        # print(repr(cache), file=open('params_debug', 'a'))
         cache = zlib.decompress(cache)
+        # print(repr(cache), file=open('params_debug', 'a'))
         return pickle.loads(cache)
 
     def putCacheData(self, id, data):
@@ -279,16 +294,20 @@ class GenericToolController(BaseToolController):
             # print(f"opts: {opts}, info: {info}", file=open('params_debug','a'))
         else:
             try:
-                opts, info = self.getCachedOption(id)
+                opts, info = self.cachedOptions[id]
+                # opts, info = self.getCachedOption(id)
                 self.input_changed = False  # Temporarily. Full check towards end of action()
                 # print(f"Loaded options from cache. id: {id}, opts: {opts}, info: {info}", file=open('params_debug', 'a'))
             except Exception as e:
                 # print(f"Cache load failed for id '{id}': {e}", file=open('params_debug', 'a'))
+                # import traceback
+                # traceback.print_exc(file=open('params_debug', 'a'))
                 opts, info = self._getOptionsBox(i, val)
                 self.input_changed = True
         
         # self.cachedParams[id] = val
-        self.putCachedOption(id, (opts, info))
+        # self.putCachedOption(id, (opts, info))
+        self.cachedOptions[id] = (opts, info)
         self.inputInfo.append(info)
         return opts
 
@@ -335,11 +354,13 @@ class GenericToolController(BaseToolController):
                 if opts == '__genome__':
                     self.inputTypes += ['__genome__']
                     try:
-                        genomeCache = self.getCacheData(id)
+                        genomeCache = self.cachedExtra[id]
+                        # genomeCache = self.getCacheData(id)
                     except Exception as e:
                         # print 'genome cache empty', e
                         genomeCache = self._getAllGenomes()
-                        self.putCacheData(id, genomeCache)
+                        # self.putCacheData(id, genomeCache)
+                        self.cachedExtra[id] = genomeCache
                         
                     opts = self.getGenomeElement(id, genomeCache)
                     val = self.getGenome(id)

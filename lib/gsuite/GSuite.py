@@ -168,7 +168,12 @@ class GSuite:
         return [x.getAttribute(attrName) for x in self.allTracks()]
 
     def __getattribute__(self, attr):
-        if not object.__getattribute__(self, '_updatedHeaders') and \
+        try:
+            updatedHeaders = object.__getattribute__(self, '_updatedHeaders')
+        except AttributeError as e:
+            updatedHeaders = False
+
+        if not updatedHeaders and \
                 not attr.startswith('_') and \
                 attr not in ('addTrack', 'addTracks', 'numTracks'):
             self._updateGSuiteHeaders()
