@@ -447,7 +447,7 @@ class GenericToolController(BaseToolController):
             self.options.append(opts)
 
             oldval = self.oldValues[id] if id in self.oldValues else None
-            if id in self.resetBoxes:
+            if i in self.resetBoxes:
                 self.oldValues[id] = val
                 if val != oldval:
                     reset = True
