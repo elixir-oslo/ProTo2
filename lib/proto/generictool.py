@@ -39,14 +39,16 @@ class GenericToolController(BaseToolController):
         self.errorMessage = None
         self.toolId = self.params.get('tool_id', 'default_tool_id')
 
+        if 'param_dict' in self.params and not self.params['param_dict']:
+            # initial tool state, no manual selections made, not reloaded
+            self.use_default = True
+        else:
+            self.use_default = False
+        
         if 'old_values' in self.params:
             self.oldValues = json.loads(unquote(self.params.get('old_values')))
-            self.use_default = False
         else:
-            # initial tool state, no manual selections made, not reloaded
             self.oldValues = {}
-            self.use_default = True
-
 
         self.subClassId = unquote(self.params.get('sub_class_id', ''))
 
@@ -74,11 +76,12 @@ class GenericToolController(BaseToolController):
         if self.subClassId:
             if self.subClassId in self.subClasses:
                 self.prototype = self.subClasses[self.subClassId]()
-                if 'sub_class_id' not in self.oldValues or self.oldValues['sub_class_id'] != self.subClassId:
-                    self.oldValues['sub_class_id'] = self.subClassId
-                    # do not reset boxes/ignore params if we are called with parameters in the url (e.g redirect or demo link)
-                    if not self.use_default:
-                        self.resetAll = True
+
+                # reset boxes/ignore params only when changed, not if we are called with parameters in the url (e.g redirect or demo link)
+                if 'sub_class_id' in self.oldValues and self.oldValues['sub_class_id'] != self.subClassId:
+                    self.resetAll = True
+
+                self.oldValues['sub_class_id'] = self.subClassId
 
         self.inputTypes = []
         self.inputValues = []
@@ -93,8 +96,8 @@ class GenericToolController(BaseToolController):
         self.extra_output = []
 
         self._init()
-
         self._initCache()
+
         if trans:
             self.action()
 
@@ -208,19 +211,19 @@ class GenericToolController(BaseToolController):
         try:
             self.cachedParams = self.decodeCache(self.params.get('cached_params'))
         except Exception as e:
-            #print 'cached_params', e
+            # print(f"cached_params error: {e}", file=open('params_debug', 'a'))
             self.cachedParams = {}
             
         try:
             self.cachedOptions = self.decodeCache(self.params.get('cached_options'))
         except Exception as e:
-            #print 'cached_options', e
+            # print(f"cached_options error: {e}", file=open('params_debug', 'a'))
             self.cachedOptions = {}
 
         try:
             self.cachedExtra = self.decodeCache(self.params.get('cached_extra'))
         except Exception as e:
-            #print 'cached_extra', e
+            # print(f"cached_extra error: {e}", file=open('params_debug', 'a'))
             self.cachedExtra = {}
 
     @staticmethod
@@ -273,14 +276,14 @@ class GenericToolController(BaseToolController):
         if self.input_changed or id not in self.cachedParams:
             opts, info = self._getOptionsBox(i, val)
             self.input_changed = True
+            # print(f"opts: {opts}, info: {info}", file=open('params_debug','a'))
         else:
             try:
                 opts, info = self.getCachedOption(id)
                 self.input_changed = False  # Temporarily. Full check towards end of action()
-                print(('Loaded options from cache. id: {}, opts: {}, info: {}'.format(
-                    id, opts, info)))
+                # print(f"Loaded options from cache. id: {id}, opts: {opts}, info: {info}", file=open('params_debug', 'a'))
             except Exception as e:
-                print(('Cache load failed for id "%s": %s' % (id, e)))
+                # print(f"Cache load failed for id '{id}': {e}", file=open('params_debug', 'a'))
                 opts, info = self._getOptionsBox(i, val)
                 self.input_changed = True
         
@@ -448,20 +451,19 @@ class GenericToolController(BaseToolController):
             self.inputValues.append(None if display_only else makeUnicodeIfString(val))
             self.options.append(opts)
 
-            oldval = self.oldValues[id] if id in self.oldValues else None
             if i in self.resetBoxes:
-                self.oldValues[id] = val
-                if val != oldval:
+                if id in self.oldValues and val != self.oldValues[id]:
                     reset = True
+                self.oldValues[id] = val
 
             if not self.input_changed:
                 if val or self.cachedParams[id]:
                     self.input_changed = (makeUnicodeIfString(val) != makeUnicodeIfString(self.cachedParams[id]))
-                # print u'Loaded values from cache. id: {}, val: {}, cached: {}, ' \
-                #       u'input changed: {}'.format(
-                #           id, repr(val), repr(self.cachedParams[id]), self.input_changed)
 
-            # print "Caching.. id: {}, val: {}".format(id, repr(val))
+            # print(f"id: {id}, val: {repr(val)}, oldval: {self.oldValues.get(id)}, cached: {repr(self.cachedParams[id]) if id in self.cachedParams else ''}, "
+            #       f"params: {self.params.get(id)}, reset: {reset}, self.input_changed: {self.input_changed}", file=open('params_debug', 'a'))
+            # print("Caching.. id: {}, val: {}".format(id, repr(val)),file=open('params_debug', 'a'))
+
             self.cachedParams[id] = val
 
         ChoiceTuple = namedtuple('ChoiceTuple', self.inputIds)
