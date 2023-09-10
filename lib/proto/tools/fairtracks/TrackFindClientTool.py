@@ -28,14 +28,15 @@ class TrackFindClientTool(GeneralGuiTool):
     RANDOM_50_TRACKS = 'Select 50 random tracks'
     MANUAL_TRACK_SELECT = 'Select tracks manually'
 
+    SPECIES_PATH = ['samples', 'species_name']
+    PHENOTYPE_PATH = ['samples', 'phenotype', 'term_label']
     CELL_TISSUE_PATH = ['samples', 'sample_type', 'summary']
     EXPERIMENT_TYPE_PATH = ['experiments', 'technique', 'term_label']
-    GENOME_ASSEMBLY_PATH = ['tracks', 'assembly_name']
     TARGET_PATH = ['experiments', 'target', 'summary']
-    FILE_FORMAT_PATH = ['tracks', 'file_format', 'term_label']
-    TYPE_OF_DATA_PATH = ['tracks', 'type_of_condensed_data']
-    PHENOTYPE_PATH = ['samples', 'phenotype', 'term_label']
+    GENOME_ASSEMBLY_PATH = ['tracks', 'assembly_name']
     GEOMETRIC_TRACK_TYPE_PATH = ['tracks', 'geometric_track_type']
+    TYPE_OF_DATA_PATH = ['tracks', 'type_of_condensed_data']
+    FILE_FORMAT_PATH = ['tracks', 'file_format', 'term_label']
     LONG_LABEL_PATH = ['tracks', 'label_long']
 
     CELL_TISSUE_ATTR = '->'.join(CELL_TISSUE_PATH)
@@ -60,6 +61,7 @@ class TrackFindClientTool(GeneralGuiTool):
     NO = 'No'
 
     ATTRIBUTE_SHORTCUTS = OrderedDict([
+        ('* Sample - species', SPECIES_PATH),
         ('* Sample - phenotype', PHENOTYPE_PATH),
         ('* Sample - type (cell/tissue)', CELL_TISSUE_PATH),
         ('* Experiment - technique', EXPERIMENT_TYPE_PATH),
