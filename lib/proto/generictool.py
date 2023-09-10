@@ -39,7 +39,7 @@ class GenericToolController(BaseToolController):
         self.errorMessage = None
         self.toolId = self.params.get('tool_id', 'default_tool_id')
 
-        if 'cached_params' in self.params:
+        if 'cachedParams' in self.params:
             # self.oldValues = json.loads(unquote(self.params.get('old_values')))
             self.use_default = False
         else:
