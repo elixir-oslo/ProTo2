@@ -25,7 +25,7 @@
     ]]>
     </command>
     <!--    <inputs action="/" check_values="false" method="get"> -->
-    <inputs ict_server_tool_id="interactive_tool_proto2" ict_server_tool_version="0.0.1" ict_server_entrypoint_label="proto2_api">
+    <inputs interactive_service_tool_id="interactive_tool_proto2" interactive_service_tool_version="0.0.1" interactive_service_entrypoint_label="proto2_api">
         <param name="interactive_tool_id" type="hidden" value="interactive_tool_proto2" />
         <param name="interactive_tool_entry_name" type="hidden" value="ProTo2 Interactive Tool" />
         <param name="proto_tool_id" type="hidden" value="proto_gui_test_tool7" />

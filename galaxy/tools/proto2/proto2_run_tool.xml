@@ -21,7 +21,7 @@
 	conda run -n proto2 /opt/proto2/run-tool.sh 'inputs.json'
     ]]>
     </command>
-    <inputs ict_server_tool_id="interactive_tool_proto2" ict_server_tool_version="0.0.1" ict_server_entrypoint_label="proto2_api">
+    <inputs interactive_service_tool_id="interactive_tool_proto2" interactive_service_tool_version="0.0.1" interactive_service_entrypoint_label="proto2_api">
         <param name="param_dict" type="text" area="true" optional="false" label="Tool params">
         	<sanitizer sanitize="false" />
         </param>
