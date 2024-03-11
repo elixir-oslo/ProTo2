@@ -29,10 +29,9 @@
         <environment_variable name="USER_EMAIL">$__user_email__</environment_variable>
         <environment_variable name="REMOTE_HOST">$__galaxy_url__</environment_variable>
         <environment_variable name="GALAXY_URL">$__galaxy_url__</environment_variable>
-        <environment_variable name="PUID">$__app__.config.uid</environment_variable>
         <environment_variable name="PGID">$__app__.config.gid</environment_variable>
         <environment_variable name="API_KEY" inject="api_key" />
-        <!--<environment_variable name="EP_PATH" inject="entry_point_path" entry_point_name="ProTo2 Interactive Tool"/>-->
+        <environment_variable name="EP_PATH" inject="entry_point_path_for_label">proto2_api</environment_variable>
     </environment_variables>
     <command detect_errors="exit_code"><![CDATA[
         #if $as_user:
